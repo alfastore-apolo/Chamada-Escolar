@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Dados de chamada por dia — leitura pública, escrita pública (app sem auth)
+    match /escolas/{escolaId}/dias/{diaId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Histórico gerado pelo reset de meia-noite — somente leitura pública
+    match /escolas/{escolaId}/historico/{diaId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Qualquer outro caminho — bloqueado
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
