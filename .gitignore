@@ -1,0 +1,27 @@
+# Dependências
+node_modules/
+
+# Build de produção
+build/
+
+# Variáveis de ambiente (NUNCA suba isso)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
