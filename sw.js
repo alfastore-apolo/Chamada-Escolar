@@ -1,10 +1,10 @@
-const CACHE_NAME = 'chamada-escolar-v1';
+const CACHE_NAME = 'chamada-escolar-v2';
 const urlsToCache = [
   '/',
   '/index.html',
+  '/manifest.json',
   '/icone-192.png',
-  '/ceti-icon-512.png',
-  '/manifest.json'
+  '/icone-512.png'
 ];
 
 self.addEventListener('install', event => {
@@ -24,12 +24,18 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  // Requisições ao Firebase sempre vão para a rede (tempo real)
-  if (event.request.url.includes('firestore.googleapis.com') ||
-      event.request.url.includes('firebase')) {
+  // Não cacheia requisições ao Firebase
+  if (event.request.url.includes('firebaseio.com') ||
+      event.request.url.includes('googleapis.com') ||
+      event.request.url.includes('gstatic.com')) {
     return;
   }
   event.respondWith(
     caches.match(event.request).then(response => response || fetch(event.request))
   );
+});
+
+// Escuta mensagem para forçar atualização
+self.addEventListener('message', event => {
+  if (event.data === 'skipWaiting') self.skipWaiting();
 });
