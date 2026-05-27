@@ -17,8 +17,6 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Helvetica Neue',Arial,sans-serif;background:#f8fafc;color:#1e293b;min-height:100vh;padding-bottom:100px;}
 button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Helvetica Neue',Arial,sans-serif;}
-
-/* HEADER */
 .header{background:linear-gradient(160deg,#0f172a 0%,#1e3a5f 60%,#1e40af 100%);color:white;padding:22px 20px 28px;border-radius:0 0 32px 32px;box-shadow:0 8px 30px rgba(15,23,42,.25);}
 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;width:100%;}
 .top-left{display:flex;align-items:center;gap:12px;}
@@ -38,10 +36,6 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
 .date-display{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:5px 11px;color:#cbd5e1;font-weight:800;font-size:10px;letter-spacing:0.4px;cursor:pointer;white-space:nowrap;font-variant-numeric:tabular-nums;transition:background .2s;}
 .date-display:hover{background:rgba(255,255,255,.14);}
 .date-display::before{content:"📅";font-size:11px;}
-.header-main-row{display:none;}
-.header-right{display:none;}
-.brand{display:none;}
-.top-center{display:none;}
 .cards{display:flex;gap:12px;flex-direction:row;}
 .card{flex:1;border-radius:20px;padding:16px 16px;position:relative;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);}
 .circle{position:absolute;width:80px;height:80px;border-radius:50%;top:-22px;right:-22px;}
@@ -52,8 +46,6 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
 .red{color:#f87171;}
 .card-number{font-size:44px;line-height:1;font-weight:900;color:white;}
 .card-sub{margin-top:6px;color:#94a3b8;font-size:10px;font-weight:700;}
-
-/* GROUPS */
 .groups{padding:16px 12px;display:flex;flex-direction:column;gap:14px;}
 .group{border-radius:20px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.07);}
 .group-header{padding:15px 16px;color:white;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
@@ -77,24 +69,12 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
 .plus-green{background:#dcfce7;color:#16a34a;}
 .plus-red{background:#fee2e2;color:#dc2626;}
 .counter-value{font-size:28px;font-weight:900;min-width:40px;text-align:center;}
-
-/* FOOTER */
 .footer{position:fixed;left:0;right:0;bottom:0;background:white;border-top:1px solid #e2e8f0;padding:12px;text-align:center;display:flex;flex-direction:column;align-items:center;}
 .footer small{display:block;color:#94a3b8;margin-bottom:4px;font-weight:700;}
 .footer a{text-decoration:none;color:#16a34a;font-size:14px;font-weight:900;}
 .footer-tap-zone{position:absolute;bottom:0;left:0;width:60px;height:60px;cursor:default;z-index:10;}
-
-/* ADMIN ICON BUTTONS (inline) */
-.admin-icons{display:inline-flex;gap:4px;margin-left:6px;vertical-align:middle;}
 .aib{background:none;border:none;cursor:pointer;font-size:14px;padding:3px 5px;border-radius:7px;transition:background .15s,transform .1s;line-height:1;}
 .aib:hover{background:rgba(255,255,255,.2);transform:scale(1.15);}
-.aib-dark:hover{background:rgba(0,0,0,.08);}
-
-/* GROUP ADMIN ROW */
-.group-admin-row{display:none;background:rgba(255,255,255,.12);padding:8px 16px;gap:8px;align-items:center;justify-content:flex-end;border-top:1px solid rgba(255,255,255,.1);}
-.group-admin-row.show{display:flex;}
-
-/* ===================== MODAL BACKDROP ===================== */
 .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center;}
 .modal-backdrop.show{display:flex;}
 .modal{background:white;border-radius:24px;padding:28px 24px;width:90%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:popIn .22s ease;}
@@ -109,12 +89,8 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
 .btn-danger{background:linear-gradient(135deg,#dc2626,#ef4444);color:white;border:none;border-radius:12px;padding:10px 18px;font-weight:800;cursor:pointer;font-size:14px;}
 .modal-error{color:#ef4444;font-size:12px;font-weight:800;margin-top:8px;display:none;}
 .modal-error.show{display:block;}
-
-/* PASSWORD MODAL */
 #pwModal .lock-icon{font-size:40px;text-align:center;margin-bottom:12px;}
 #pwModal h2{text-align:center;}
-
-/* ADMIN PANEL */
 #adminPanel{display:none;position:fixed;inset:0;background:#f0f4ff;z-index:900;overflow-y:auto;padding-bottom:80px;}
 #adminPanel.show{display:block;}
 .ap-header{background:linear-gradient(135deg,#0f172a,#1e40af);padding:22px 18px 18px;color:white;border-radius:0 0 24px 24px;margin-bottom:16px;}
@@ -135,23 +111,6 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
 .add-btn-row{background:#f0fdf4;color:#16a34a;}
 .ap-add-btn{width:100%;background:linear-gradient(135deg,#16a34a,#22c55e);color:white;border:none;border-radius:12px;padding:11px;font-weight:900;font-size:14px;cursor:pointer;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:6px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Arial,sans-serif;}
 .ap-add-btn:hover{opacity:.92;}
-
-/* CHIP for escola name */
-.escola-chip{display:inline-flex;align-items:center;gap:6px;background:#f0f4ff;border-radius:12px;padding:8px 14px;}
-.escola-chip span{font-size:15px;font-weight:900;color:#1e3a8a;}
-
-@media(max-width:700px){
-  .cards{flex-direction:row;}
-  .counter-grid{flex-direction:row;}
-  .top{flex-direction:row;flex-wrap:wrap;}
-  .info-panel{align-items:flex-end;}
-}
-@media(max-width:380px){
-  .counter-grid{flex-direction:column;}
-  .card-number{font-size:38px;}
-}
-
-/* ===================== GRÁFICO ===================== */
 .chart-section{margin:0 12px 16px;background:white;border-radius:24px;box-shadow:0 2px 12px rgba(0,0,0,.07);overflow:hidden;}
 .chart-header{padding:16px 18px 0;display:flex;justify-content:space-between;align-items:flex-start;}
 .chart-title-block{display:flex;flex-direction:column;gap:2px;}
@@ -166,39 +125,34 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
 .chart-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:800;color:#64748b;}
 .chart-legend-dot{width:10px;height:10px;border-radius:50%;}
 
-
+/* Toast notification */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#0f172a;color:white;padding:10px 20px;border-radius:12px;font-size:13px;font-weight:800;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;}
+.toast.show{opacity:1;}
 </style>
 </head>
 <body>
 
-<!-- ==================== MAIN APP ==================== -->
 <div id="app">
-
 <div class="header">
   <div class="top">
-
-    <!-- ESQUERDA: identidade da escola -->
     <div class="top-left">
       <div class="brand-bar"></div>
       <div class="brand-text">
         <div class="header-title">CHAMADA ESCOLAR</div>
         <div class="school-name-wrap">
           <small id="schoolNameLabel">CETI Dariana</small>
-          <button class="admin-icon-btn" id="editSchoolNameBtn" style="display:none" title="Editar nome da escola" onclick="openEditSchoolName()">✏️</button>
+          <button class="admin-icon-btn" id="editSchoolNameBtn" style="display:none" title="Editar nome" onclick="openEditSchoolName()">✏️</button>
         </div>
       </div>
     </div>
-
-    <!-- DIREITA: status + data -->
     <div class="top-right">
       <div class="badge-row">
         <div class="badge online">🟢 Tempo Real</div>
         <div class="badge admin-badge" id="adminBadge" style="display:none">🔐 Admin</div>
       </div>
-      <input type="date" class="date-input" id="dateInput" style="position:absolute;opacity:0;width:0;height:0;pointer-events:none;">
+      <input type="date" id="dateInput" style="position:absolute;opacity:0;width:0;height:0;pointer-events:none;">
       <span class="date-display" id="dateDisplay" title="Clique para alterar a data"></span>
     </div>
-
   </div>
   <div class="cards">
     <div class="card">
@@ -218,8 +172,6 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
 
 <div class="groups" id="groups"></div>
 
-
-<!-- ==================== GRÁFICO ==================== -->
 <div class="chart-section" id="chartSection">
   <div class="chart-header">
     <div class="chart-title-block">
@@ -232,9 +184,7 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
       <button class="chart-tab" onclick="setChartPeriod('mes',this)">Mês</button>
     </div>
   </div>
-  <div class="chart-body">
-    <canvas id="freqChart"></canvas>
-  </div>
+  <div class="chart-body"><canvas id="freqChart"></canvas></div>
   <div class="chart-legend">
     <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#4ade80"></div>Presentes</div>
     <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#f87171"></div>Ausentes</div>
@@ -246,18 +196,15 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
   <small>Desenvolvido por <strong>Alfa Store</strong> — Soluções e Tecnologia</small>
   <a href="https://wa.me/5592994810508" target="_blank">📱 Suporte — (92) 99481-0508</a>
 </div>
+</div>
 
-</div><!-- /#app -->
-
-<!-- ==================== ADMIN PANEL ==================== -->
+<!-- ADMIN PANEL -->
 <div id="adminPanel">
   <div class="ap-header">
     <button class="ap-close" onclick="closeAdmin()">✕ Fechar</button>
     <div class="ap-title">⚙️ Painel Administrativo</div>
     <div class="ap-subtitle">Gerencie escola, séries e anos</div>
   </div>
-
-  <!-- ESCOLA -->
   <div class="ap-section">
     <div class="ap-section-title">🏫 Nome da Escola</div>
     <div class="ap-row">
@@ -266,26 +213,32 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
         <div class="ap-row-sub">Nome exibido no topo</div>
       </div>
       <div class="ap-row-icons">
-        <button class="ap-icon-btn edit-btn" title="Editar nome" onclick="openEditSchoolName()">✏️</button>
+        <button class="ap-icon-btn edit-btn" onclick="openEditSchoolName()">✏️</button>
       </div>
     </div>
   </div>
-
-  <!-- SÉRIES / ANOS -->
   <div class="ap-section">
     <div class="ap-section-title">📚 Séries e Anos</div>
     <div id="apGroupList"></div>
     <button class="ap-add-btn" onclick="openAddGroup()">➕ Adicionar Série / Ano</button>
   </div>
-
-  <!-- TURMAS (dinâmico, abre ao clicar no grupo) -->
   <div class="ap-section" id="apTurmasSection" style="display:none">
     <div class="ap-section-title" id="apTurmasSectionTitle">📋 Turmas</div>
     <div id="apTurmaList"></div>
     <button class="ap-add-btn" id="apAddTurmaBtn">➕ Adicionar Turma</button>
   </div>
-
-  <!-- GRÁFICO -->
+  <div class="ap-section">
+    <div class="ap-section-title">🔄 Reset Manual</div>
+    <div class="ap-row">
+      <div>
+        <div class="ap-row-label">Zerar contadores do dia</div>
+        <div class="ap-row-sub">Reseta todas as presenças e ausências de hoje para zero</div>
+      </div>
+      <div class="ap-row-icons">
+        <button class="ap-icon-btn" style="background:#fff7ed;color:#ea580c;width:auto;padding:0 12px;font-size:12px;font-weight:900;" onclick="confirmManualReset()">↺ Zerar</button>
+      </div>
+    </div>
+  </div>
   <div class="ap-section">
     <div class="ap-section-title">📈 Gráfico de Frequência</div>
     <div class="ap-row">
@@ -300,22 +253,7 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
   </div>
 </div>
 
-
-<!-- Confirmar exclusão gráfico -->
-<div class="modal-backdrop" id="delChartModal">
-  <div class="modal">
-    <h2>🗑️ Remover Gráfico</h2>
-    <p style="color:#64748b;font-size:14px;margin-bottom:18px">Deseja remover o gráfico de frequência da página? Essa ação só pode ser desfeita recarregando o app.</p>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('delChartModal')">Cancelar</button>
-      <button class="btn-danger" onclick="doDeleteChart()">Remover</button>
-    </div>
-  </div>
-</div>
-
-<!-- ==================== MODAIS ==================== -->
-
-<!-- Senha -->
+<!-- MODAIS -->
 <div class="modal-backdrop" id="pwModal">
   <div class="modal">
     <div class="lock-icon">🔐</div>
@@ -332,7 +270,6 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
   </div>
 </div>
 
-<!-- Editar nome escola -->
 <div class="modal-backdrop" id="editSchoolModal">
   <div class="modal">
     <h2>✏️ Editar Nome da Escola</h2>
@@ -345,7 +282,6 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
   </div>
 </div>
 
-<!-- Adicionar / Editar Grupo -->
 <div class="modal-backdrop" id="groupModal">
   <div class="modal">
     <h2 id="groupModalTitle">➕ Nova Série / Ano</h2>
@@ -363,12 +299,11 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
     </div>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal('groupModal')">Cancelar</button>
-      <button class="btn-confirm" id="groupModalSaveBtn" onclick="saveGroup()">Salvar</button>
+      <button class="btn-confirm" onclick="saveGroup()">Salvar</button>
     </div>
   </div>
 </div>
 
-<!-- Confirmar exclusão grupo -->
 <div class="modal-backdrop" id="delGroupModal">
   <div class="modal">
     <h2>🗑️ Excluir Série/Ano</h2>
@@ -380,7 +315,6 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
   </div>
 </div>
 
-<!-- Adicionar / Editar Turma -->
 <div class="modal-backdrop" id="turmaModal">
   <div class="modal">
     <h2 id="turmaModalTitle">➕ Nova Turma</h2>
@@ -393,7 +327,6 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
   </div>
 </div>
 
-<!-- Confirmar exclusão turma -->
 <div class="modal-backdrop" id="delTurmaModal">
   <div class="modal">
     <h2>🗑️ Excluir Turma</h2>
@@ -405,6 +338,31 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
   </div>
 </div>
 
+<div class="modal-backdrop" id="delChartModal">
+  <div class="modal">
+    <h2>🗑️ Resetar Gráfico</h2>
+    <p style="color:#64748b;font-size:14px;margin-bottom:18px">Deseja zerar os dados do gráfico?</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('delChartModal')">Cancelar</button>
+      <button class="btn-danger" onclick="doDeleteChart()">Resetar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="manualResetModal">
+  <div class="modal">
+    <h2>🔄 Zerar Contadores</h2>
+    <p style="color:#64748b;font-size:14px;margin-bottom:18px">Isso irá zerar todas as presenças e ausências do dia de hoje. Os dados serão salvos no histórico antes de zerar.</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('manualResetModal')">Cancelar</button>
+      <button class="btn-danger" onclick="doManualReset()">Zerar agora</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
 <script>
 // ===================== FIREBASE =====================
 const firebaseConfig = {
@@ -414,25 +372,24 @@ const firebaseConfig = {
   projectId: "chamada--escolar",
   storageBucket: "chamada--escolar.firebasestorage.app",
   messagingSenderId: "678870294819",
-  appId: "1:678870294819:web:05221666ddd030b90c2c96",
-  measurementId: "G-KQDV8RRKZB"
+  appId: "1:678870294819:web:05221666ddd030b90c2c96"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const SCHOOL_ID = "ceti-dariana";
 
-// ===================== ESTADO ADMIN =====================
+// ===================== ESTADO =====================
 let isAdmin = false;
-let tapCount = 0;
-let tapTimer = null;
 let editingGroupIndex = null;
 let deletingGroupIndex = null;
 let activeGroupIndexForTurma = null;
 let editingTurmaIndex = null;
 let deletingTurmaIndex = null;
-
-// ===================== DADOS =====================
 let schoolName = "CETI Dariana";
+let rendered = false;
+let realtimeRef = null;
+let freqChart = null;
+let chartPeriod = 'dia';
 
 let grupos = [
   {id:"fundamental8",label:"8º Ano — Fundamental",emoji:"📘",cor:"#ea580c",
@@ -452,14 +409,16 @@ function buildData(){
   grupos.forEach(g=>g.turmas.forEach(t=>{data[t.id]={p:0,f:0};}));
   return data;
 }
-let dados=buildData();
-const groupsEl=document.getElementById("groups");
+let dados = buildData();
 
-// ===================== DATA ATUAL =====================
-function today(){return new Date().toISOString().slice(0,10);}
-document.getElementById("dateInput").value=today();
-
+// ===================== DATA =====================
 function pad2(n){return String(n).padStart(2,"0");}
+function todayStr(){
+  const d=new Date();
+  return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+}
+
+document.getElementById("dateInput").value = todayStr();
 
 function updateDateDisplay(val){
   if(!val){document.getElementById("dateDisplay").innerText="";return;}
@@ -468,12 +427,67 @@ function updateDateDisplay(val){
   const dt=new Date(Number(y),Number(m)-1,Number(d));
   document.getElementById("dateDisplay").innerText=days[dt.getDay()]+", "+d+"/"+m+"/"+y;
 }
-updateDateDisplay(today());
-document.getElementById("dateDisplay").onclick=function(){document.getElementById("dateInput").showPicker&&document.getElementById("dateInput").showPicker();document.getElementById("dateInput").click();};
+updateDateDisplay(todayStr());
+document.getElementById("dateDisplay").onclick=function(){
+  const inp=document.getElementById("dateInput");
+  if(inp.showPicker) inp.showPicker(); else inp.click();
+};
 
+// ===================== RESET ROBUSTO À MEIA-NOITE =====================
+// Estratégia: salva "lastDate" no Firebase. Ao abrir o app (ou ao retornar do
+// segundo plano via visibilitychange + Page Lifecycle), compara com hoje.
+// Se forem datas diferentes → arquiva o dia anterior e zera.
 
-// ===================== RENDER PRINCIPAL =====================
-let rendered=false;
+async function checkAndResetIfNewDay(){
+  const date = todayStr();
+  const snap = await db.ref(`escolas/${SCHOOL_ID}/meta/lastDate`).get();
+  const lastDate = snap.exists() ? snap.val() : null;
+
+  if(lastDate && lastDate !== date){
+    // Arquiva o dia anterior no histórico
+    const prevSnap = await db.ref(`escolas/${SCHOOL_ID}/dias/${lastDate}`).get();
+    if(prevSnap.exists()){
+      await db.ref(`escolas/${SCHOOL_ID}/historico/${lastDate}`)
+        .set({...prevSnap.val(), encerradoEm: new Date().toISOString()});
+    }
+    // Zera o dia atual
+    const dadosZerados = buildData();
+    await db.ref(`escolas/${SCHOOL_ID}/dias/${date}`).set({value: dadosZerados});
+    showToast("🌅 Novo dia! Contadores zerados automaticamente.");
+  }
+
+  // Atualiza lastDate para hoje
+  await db.ref(`escolas/${SCHOOL_ID}/meta/lastDate`).set(date);
+
+  // Garante que o dateInput está com hoje
+  document.getElementById("dateInput").value = date;
+  updateDateDisplay(date);
+}
+
+// Dispara ao abrir o app
+// Dispara ao retornar do segundo plano (visibilitychange)
+document.addEventListener("visibilitychange", () => {
+  if(document.visibilityState === "visible"){
+    checkAndResetIfNewDay().then(() => {
+      // Se a data mudou enquanto estava em background, recarrega dados
+      const currentDate = document.getElementById("dateInput").value;
+      const today = todayStr();
+      if(currentDate !== today){
+        rendered = false;
+        realtime();
+      }
+    });
+  }
+});
+
+// Page Lifecycle API (freeze/resume)
+window.addEventListener("resume", () => {
+  checkAndResetIfNewDay().then(() => realtime());
+});
+
+// ===================== RENDER =====================
+const groupsEl = document.getElementById("groups");
+
 function render(){
   if(rendered){updateValues();return;}
   rendered=true;
@@ -497,9 +511,9 @@ function render(){
           <div class="mini group-p" style="background:rgba(255,255,255,.18)">✅ ${totalP}</div>
           <div class="mini group-f" style="background:rgba(0,0,0,.16)">❌ ${totalF}</div>
           <div class="group-admin-icons admin-only" style="display:none;gap:4px;">
-            <button class="aib" title="Editar série" onclick="event.stopPropagation();openEditGroup(${gi})">✏️</button>
-            <button class="aib" title="Excluir série" onclick="event.stopPropagation();openDeleteGroup(${gi})">🗑️</button>
-            <button class="aib" title="Gerenciar turmas" onclick="event.stopPropagation();openTurmasAdmin(${gi})">📋</button>
+            <button class="aib" title="Editar" onclick="event.stopPropagation();openEditGroup(${gi})">✏️</button>
+            <button class="aib" title="Excluir" onclick="event.stopPropagation();openDeleteGroup(${gi})">🗑️</button>
+            <button class="aib" title="Turmas" onclick="event.stopPropagation();openTurmasAdmin(${gi})">📋</button>
           </div>
         </div>
       </div>
@@ -515,9 +529,7 @@ function render(){
       turmaEl.className="turma";
       turmaEl.dataset.turmaId=turma.id;
       turmaEl.innerHTML=`
-        <div class="turma-title">
-          ${turma.label}
-        </div>
+        <div class="turma-title">${turma.label}</div>
         <div class="counter-grid">
           <div class="counter-box present-box">
             <div class="counter-label green">✅ Presentes</div>
@@ -573,89 +585,87 @@ function updateTotals(){
   document.getElementById("totalFaltosos").innerText=f;
 }
 
-// ===================== SAVE/REALTIME =====================
-let realtimeRef = null;
+// ===================== FIREBASE SAVE / REALTIME =====================
 async function save(){
   const date=document.getElementById("dateInput").value;
   await db.ref(`escolas/${SCHOOL_ID}/dias/${date}`).set({value:dados});
+  if(chartPeriod==='dia') loadChartData();
 }
+
 async function saveGrupos(){
   await db.ref(`escolas/${SCHOOL_ID}/config/grupos`).set(grupos);
   await db.ref(`escolas/${SCHOOL_ID}/config/schoolName`).set(schoolName);
 }
+
 function realtime(){
   const date=document.getElementById("dateInput").value;
   if(realtimeRef) realtimeRef.off();
-  realtimeRef = db.ref(`escolas/${SCHOOL_ID}/dias/${date}`);
-  realtimeRef.on("value", snapshot=>{
-    const data = snapshot.val();
-    if(data && data.value){dados=data.value;}else{dados=buildData();}
+  realtimeRef=db.ref(`escolas/${SCHOOL_ID}/dias/${date}`);
+  realtimeRef.on("value",snapshot=>{
+    const data=snapshot.val();
+    if(data&&data.value){dados=data.value;}else{dados=buildData();}
     render();
   });
 }
-// Carrega grupos e configurações do Firebase antes de iniciar
-db.ref(`escolas/${SCHOOL_ID}/config`).get().then(snap=>{
+
+// ===================== RESET MANUAL (ADMIN) =====================
+function confirmManualReset(){ openModal('manualResetModal'); }
+async function doManualReset(){
+  const date = document.getElementById("dateInput").value;
+  // Arquiva antes de zerar
+  const snap = await db.ref(`escolas/${SCHOOL_ID}/dias/${date}`).get();
   if(snap.exists()){
-    const config = snap.val();
-    if(config.grupos) grupos = config.grupos;
-    if(config.schoolName){
-      schoolName = config.schoolName;
-      document.getElementById("schoolNameLabel").innerText = schoolName;
-      document.getElementById("apSchoolName").innerText = schoolName;
-    }
+    await db.ref(`escolas/${SCHOOL_ID}/historico/${date}_manual`)
+      .set({...snap.val(), encerradoEm: new Date().toISOString(), tipo:'manual'});
   }
   dados = buildData();
-  document.getElementById("dateInput").addEventListener("change",function(){updateDateDisplay(this.value);rendered=false;realtime();});
-  render();
-  realtime();
-});
-
-// ===================== RESET AUTOMÁTICO À MEIA-NOITE =====================
-function pad2(n){return String(n).padStart(2,'0');}
-
-function scheduleNextMidnightReset(){
-  const now = new Date();
-  const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 0, 0, 0, 0);
-  const msUntilMidnight = nextMidnight - now;
-
-  setTimeout(async()=>{
-    // Salva o snapshot do dia anterior antes de zerar
-    const prevDate = document.getElementById("dateInput").value;
-    await db.ref(`escolas/${SCHOOL_ID}/historico/${prevDate}`)
-      .set({value: dados, encerradoEm: new Date().toISOString()});
-
-    // Zera os dados locais
-    dados = buildData();
-
-    // Atualiza dateInput para o novo dia
-    const today = new Date();
-    const newDate = `${today.getFullYear()}-${pad2(today.getMonth()+1)}-${pad2(today.getDate())}`;
-    document.getElementById("dateInput").value = newDate;
-    updateDateDisplay(newDate);
-
-    // Salva o novo dia zerado no Firebase e re-escuta
-    await save();
-    rendered = false;
-    realtime();
-    render();
-
-    // Reagenda para a próxima meia-noite
-    scheduleNextMidnightReset();
-  }, msUntilMidnight);
-
-  console.log(`[Chamada] Reset automático agendado em ${Math.round(msUntilMidnight/1000/60)} min.`);
+  await save();
+  closeModal('manualResetModal');
+  showToast("✅ Contadores zerados com sucesso!");
 }
 
-scheduleNextMidnightReset();
+// ===================== TOAST =====================
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.innerText=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
 
-// ===================== DOUBLE-CLICK FOOTER =====================
+// ===================== INIT =====================
+db.ref(`escolas/${SCHOOL_ID}/config`).get().then(snap=>{
+  if(snap.exists()){
+    const config=snap.val();
+    if(config.grupos) grupos=config.grupos;
+    if(config.schoolName){
+      schoolName=config.schoolName;
+      document.getElementById("schoolNameLabel").innerText=schoolName;
+      document.getElementById("apSchoolName").innerText=schoolName;
+    }
+  }
+  dados=buildData();
+
+  document.getElementById("dateInput").addEventListener("change",function(){
+    updateDateDisplay(this.value);
+    rendered=false;
+    realtime();
+  });
+
+  // Verifica reset de dia ANTES de iniciar o realtime
+  checkAndResetIfNewDay().then(()=>{
+    render();
+    realtime();
+    setTimeout(()=>loadChartData(),800);
+  });
+});
+
+// ===================== DOUBLE TAP FOOTER =====================
 const footerTapZone=document.getElementById("footerTapZone");
 footerTapZone.addEventListener("dblclick",()=>{
   if(isAdmin){openAdmin();return;}
   openModal("pwModal");
   setTimeout(()=>document.getElementById("pwInput").focus(),100);
 });
-// Mobile: double tap
 let lastTap=0;
 footerTapZone.addEventListener("touchend",e=>{
   const now=Date.now();
@@ -668,85 +678,58 @@ footerTapZone.addEventListener("touchend",e=>{
   lastTap=now;
 });
 
-// ===================== SEGURANÇA — SHA-256 + Rate Limiting =====================
-// Hash SHA-256 de "Atlanta" gerado com: crypto.subtle
-// Nunca armazene a senha em texto puro.
-const ADMIN_HASH = "3eac0392a5a77c97e46b31a2e9fcd9bc0b4a5a0c2a5e6b7d8f1e2c3a4b5c6d7e";
-// Para gerar o hash correto rode no console:
-// crypto.subtle.digest('SHA-256', new TextEncoder().encode('SuaSenha'))
-//   .then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')))
-
-let pwAttempts = 0;
-let pwLockUntil = 0;
-const MAX_ATTEMPTS = 5;
-const LOCK_MS = 30000; // 30 segundos de bloqueio
-
+// ===================== SENHA =====================
+let pwAttempts=0,pwLockUntil=0;
 async function sha256(text){
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
-
 async function checkPassword(){
-  const now = Date.now();
-  if(now < pwLockUntil){
-    const secs = Math.ceil((pwLockUntil - now)/1000);
-    document.getElementById("pwError").innerText = `Muitas tentativas. Aguarde ${secs}s.`;
+  const now=Date.now();
+  if(now<pwLockUntil){
+    const secs=Math.ceil((pwLockUntil-now)/1000);
+    document.getElementById("pwError").innerText=`Muitas tentativas. Aguarde ${secs}s.`;
     document.getElementById("pwError").classList.add("show");
     return;
   }
-
-  const val = document.getElementById("pwInput").value;
-  const hash = await sha256(val);
-
-  // Gera o hash correto da senha atual para comparação
-  const correctHash = await sha256("Atlanta");
-
-  if(hash === correctHash){
-    pwAttempts = 0;
-    isAdmin = true;
+  const val=document.getElementById("pwInput").value;
+  const hash=await sha256(val);
+  const correctHash=await sha256("Atlanta");
+  if(hash===correctHash){
+    pwAttempts=0;
+    isAdmin=true;
     closeModal("pwModal");
     document.getElementById("pwInput").value="";
     document.getElementById("pwError").classList.remove("show");
-    document.getElementById("pwError").innerText = "Senha incorreta. Tente novamente.";
     applyAdminUI();
     openAdmin();
   } else {
     pwAttempts++;
     document.getElementById("pwInput").value="";
     document.getElementById("pwInput").focus();
-    if(pwAttempts >= MAX_ATTEMPTS){
-      pwLockUntil = Date.now() + LOCK_MS;
-      pwAttempts = 0;
-      document.getElementById("pwError").innerText = `Bloqueado por 30 segundos após ${MAX_ATTEMPTS} tentativas.`;
+    if(pwAttempts>=5){
+      pwLockUntil=Date.now()+30000;
+      pwAttempts=0;
+      document.getElementById("pwError").innerText=`Bloqueado por 30 segundos.`;
     } else {
-      document.getElementById("pwError").innerText = `Senha incorreta. Tentativa ${pwAttempts}/${MAX_ATTEMPTS}.`;
+      document.getElementById("pwError").innerText=`Senha incorreta. Tentativa ${pwAttempts}/5.`;
     }
     document.getElementById("pwError").classList.add("show");
   }
 }
 
-// ===================== APPLY ADMIN UI =====================
 function applyAdminUI(){
-  const adminEls=document.querySelectorAll(".admin-only");
-  adminEls.forEach(el=>el.style.display=isAdmin?"flex":"none");
+  document.querySelectorAll(".admin-only").forEach(el=>el.style.display=isAdmin?"flex":"none");
   document.getElementById("adminBadge").style.display=isAdmin?"flex":"none";
   document.getElementById("editSchoolNameBtn").style.display=isAdmin?"inline-flex":"none";
 }
 
 // ===================== ADMIN PANEL =====================
-function openAdmin(){
-  renderAdminPanel();
-  document.getElementById("adminPanel").classList.add("show");
-}
-function closeAdmin(){
-  document.getElementById("adminPanel").classList.remove("show");
-  document.getElementById("apTurmasSection").style.display="none";
-}
+function openAdmin(){renderAdminPanel();document.getElementById("adminPanel").classList.add("show");}
+function closeAdmin(){document.getElementById("adminPanel").classList.remove("show");document.getElementById("apTurmasSection").style.display="none";}
 
 function renderAdminPanel(){
-  // school name
   document.getElementById("apSchoolName").innerText=schoolName;
-  // groups list
   const list=document.getElementById("apGroupList");
   list.innerHTML="";
   grupos.forEach((g,gi)=>{
@@ -758,20 +741,18 @@ function renderAdminPanel(){
         <div class="ap-row-sub">${g.turmas.length} turmas — clique para gerenciar</div>
       </div>
       <div class="ap-row-icons">
-        <button class="ap-icon-btn edit-btn" title="Editar" onclick="openEditGroup(${gi})">✏️</button>
-        <button class="ap-icon-btn del-btn" title="Excluir" onclick="openDeleteGroup(${gi})">🗑️</button>
-        <button class="ap-icon-btn add-btn-row" title="Gerenciar turmas" onclick="openTurmasAdmin(${gi})">📋</button>
+        <button class="ap-icon-btn edit-btn" onclick="openEditGroup(${gi})">✏️</button>
+        <button class="ap-icon-btn del-btn" onclick="openDeleteGroup(${gi})">🗑️</button>
+        <button class="ap-icon-btn add-btn-row" onclick="openTurmasAdmin(${gi})">📋</button>
       </div>
     `;
     list.appendChild(row);
   });
 }
 
-// ===================== TURMAS ADMIN =====================
 function openTurmasAdmin(gi){
   activeGroupIndexForTurma=gi;
-  const g=grupos[gi];
-  document.getElementById("apTurmasSectionTitle").innerText=`📋 Turmas — ${g.label}`;
+  document.getElementById("apTurmasSectionTitle").innerText=`📋 Turmas — ${grupos[gi].label}`;
   renderTurmasList(gi);
   document.getElementById("apTurmasSection").style.display="block";
   document.getElementById("apAddTurmaBtn").onclick=()=>openAddTurma(gi);
@@ -796,11 +777,10 @@ function renderTurmasList(gi){
   });
 }
 
-// ===================== MODALS =====================
+// ===================== MODAIS =====================
 function openModal(id){document.getElementById(id).classList.add("show");}
 function closeModal(id){document.getElementById(id).classList.remove("show");}
 
-// --- ESCOLA ---
 function openEditSchoolName(){
   document.getElementById("editSchoolInput").value=schoolName;
   openModal("editSchoolModal");
@@ -816,7 +796,6 @@ function saveSchoolName(){
   saveGrupos();
 }
 
-// --- GRUPO ---
 function openAddGroup(){
   editingGroupIndex=null;
   document.getElementById("groupModalTitle").innerText="➕ Nova Série / Ano";
@@ -854,11 +833,7 @@ function saveGroup(){
   renderAdminPanel();
   saveGrupos();
 }
-function openDeleteGroup(gi){
-  deletingGroupIndex=gi;
-  document.getElementById("delGroupName").innerText=grupos[gi].label;
-  openModal("delGroupModal");
-}
+function openDeleteGroup(gi){deletingGroupIndex=gi;document.getElementById("delGroupName").innerText=grupos[gi].label;openModal("delGroupModal");}
 function confirmDeleteGroup(){
   if(deletingGroupIndex===null)return;
   grupos.splice(deletingGroupIndex,1);
@@ -870,8 +845,6 @@ function confirmDeleteGroup(){
   renderAdminPanel();
   saveGrupos();
 }
-
-// --- TURMA ---
 function openAddTurma(gi){
   editingTurmaIndex=null;
   activeGroupIndexForTurma=gi;
@@ -922,168 +895,85 @@ function confirmDeleteTurma(){
   renderTurmasList(gi);
   saveGrupos();
 }
-
-// fechar modal clicando fora
 document.querySelectorAll(".modal-backdrop").forEach(bd=>{
   bd.addEventListener("click",e=>{if(e.target===bd)bd.classList.remove("show");});
 });
 
-// ===================== GRÁFICO DE FREQUÊNCIA =====================
-let freqChart = null;
-let chartPeriod = 'dia';
-let chartVisible = true;
-
-function setChartPeriod(period, btn){
-  chartPeriod = period;
+// ===================== GRÁFICO =====================
+function setChartPeriod(period,btn){
+  chartPeriod=period;
   document.querySelectorAll('.chart-tab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
   loadChartData();
 }
 
 async function loadChartData(){
-  if(!chartVisible) return;
-  const today = document.getElementById('dateInput').value; // YYYY-MM-DD
-  const [y,m,d] = today.split('-').map(Number);
+  const today=document.getElementById('dateInput').value;
+  const [y,m,d]=today.split('-').map(Number);
+  let labels=[],presData=[],ausData=[];
 
-  let labels = [], presData = [], ausData = [];
-
-  if(chartPeriod === 'dia'){
-    // Busca por turma no dia atual
-    labels = grupos.flatMap(g => g.turmas.map(t => t.label.replace(/ª/,'ª').split(' ').slice(0,2).join(' ')));
-    presData = grupos.flatMap(g => g.turmas.map(t => dados[t.id]?.p || 0));
-    ausData  = grupos.flatMap(g => g.turmas.map(t => dados[t.id]?.f || 0));
-
-  } else if(chartPeriod === 'semana'){
-    // Últimos 7 dias
-    const days = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  if(chartPeriod==='dia'){
+    labels=grupos.flatMap(g=>g.turmas.map(t=>t.label.split(' ').slice(0,2).join(' ')));
+    presData=grupos.flatMap(g=>g.turmas.map(t=>dados[t.id]?.p||0));
+    ausData=grupos.flatMap(g=>g.turmas.map(t=>dados[t.id]?.f||0));
+  } else if(chartPeriod==='semana'){
+    const days=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
     for(let i=6;i>=0;i--){
-      const dt = new Date(y,m-1,d-i);
-      const key = dt.toISOString().slice(0,10);
+      const dt=new Date(y,m-1,d-i);
+      const key=dt.toISOString().slice(0,10);
       labels.push(days[dt.getDay()]);
       try{
-        const snap = await db.ref(`escolas/${SCHOOL_ID}/dias/${key}`).get();
-        if(snap.exists()){
-          const val = snap.val().value || {};
-          let p=0,f=0;
-          Object.values(val).forEach(v=>{p+=v.p||0;f+=v.f||0;});
-          presData.push(p); ausData.push(f);
-        } else { presData.push(0); ausData.push(0); }
-      } catch(e){ presData.push(0); ausData.push(0); }
+        const snap=await db.ref(`escolas/${SCHOOL_ID}/dias/${key}`).get();
+        if(snap.exists()){const val=snap.val().value||{};let p=0,f=0;Object.values(val).forEach(v=>{p+=v.p||0;f+=v.f||0;});presData.push(p);ausData.push(f);}
+        else{presData.push(0);ausData.push(0);}
+      }catch(e){presData.push(0);ausData.push(0);}
     }
-
-  } else if(chartPeriod === 'mes'){
-    // Semanas do mês atual (agrupa por semana)
-    const daysInMonth = new Date(y,m,0).getDate();
-    const weeks = [0,0,0,0,0];
-    const weeksPres = [0,0,0,0,0];
-    const weeksAus  = [0,0,0,0,0];
-    const promises = [];
+  } else if(chartPeriod==='mes'){
+    const daysInMonth=new Date(y,m,0).getDate();
+    const weeksPres=[0,0,0,0,0],weeksAus=[0,0,0,0,0];
+    const promises=[];
     for(let dd=1;dd<=daysInMonth;dd++){
-      const key = `${y}-${String(m).padStart(2,'0')}-${String(dd).padStart(2,'0')}`;
-      const wk = Math.floor((dd-1)/7);
-      promises.push(
-        db.ref(`escolas/${SCHOOL_ID}/dias/${key}`).get()
-          .then(snap=>{
-            if(snap.exists()){
-              const val=snap.val().value||{};
-              let p=0,f=0;
-              Object.values(val).forEach(v=>{p+=v.p||0;f+=v.f||0;});
-              weeksPres[wk]+=p; weeksAus[wk]+=f;
-            }
-          }).catch(()=>{})
-      );
+      const key=`${y}-${pad2(m)}-${pad2(dd)}`;
+      const wk=Math.floor((dd-1)/7);
+      promises.push(db.ref(`escolas/${SCHOOL_ID}/dias/${key}`).get().then(snap=>{
+        if(snap.exists()){const val=snap.val().value||{};let p=0,f=0;Object.values(val).forEach(v=>{p+=v.p||0;f+=v.f||0;});weeksPres[wk]+=p;weeksAus[wk]+=f;}
+      }).catch(()=>{}));
     }
     await Promise.all(promises);
-    const numWeeks = Math.ceil(daysInMonth/7);
-    for(let w=0;w<numWeeks;w++){
-      labels.push('Sem '+(w+1));
-      presData.push(weeksPres[w]);
-      ausData.push(weeksAus[w]);
-    }
+    const numWeeks=Math.ceil(daysInMonth/7);
+    for(let w=0;w<numWeeks;w++){labels.push('Sem '+(w+1));presData.push(weeksPres[w]);ausData.push(weeksAus[w]);}
   }
-
-  renderChart(labels, presData, ausData);
+  renderChart(labels,presData,ausData);
 }
 
-function renderChart(labels, presData, ausData){
-  const ctx = document.getElementById('freqChart').getContext('2d');
+function renderChart(labels,presData,ausData){
+  const ctx=document.getElementById('freqChart').getContext('2d');
   if(freqChart) freqChart.destroy();
-  freqChart = new Chart(ctx, {
-    type: chartPeriod === 'dia' ? 'bar' : 'line',
-    data:{
-      labels,
-      datasets:[
-        {
-          label:'Presentes',
-          data: presData,
-          backgroundColor: chartPeriod==='dia' ? 'rgba(74,222,128,0.7)' : 'rgba(74,222,128,0.15)',
-          borderColor:'#4ade80',
-          borderWidth: chartPeriod==='dia' ? 0 : 2.5,
-          borderRadius: chartPeriod==='dia' ? 6 : 0,
-          pointBackgroundColor:'#4ade80',
-          pointRadius: chartPeriod==='dia' ? 0 : 4,
-          tension:0.4,
-          fill: chartPeriod!=='dia'
-        },
-        {
-          label:'Ausentes',
-          data: ausData,
-          backgroundColor: chartPeriod==='dia' ? 'rgba(248,113,113,0.7)' : 'rgba(248,113,113,0.1)',
-          borderColor:'#f87171',
-          borderWidth: chartPeriod==='dia' ? 0 : 2.5,
-          borderRadius: chartPeriod==='dia' ? 6 : 0,
-          pointBackgroundColor:'#f87171',
-          pointRadius: chartPeriod==='dia' ? 0 : 4,
-          tension:0.4,
-          fill: chartPeriod!=='dia'
-        }
-      ]
-    },
-    options:{
-      responsive:true,
-      maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.y} alunos`}}},
-      scales:{
-        x:{grid:{display:false},ticks:{font:{family:'-apple-system,BlinkMacSystemFont,SF Pro Text,Helvetica Neue,Arial,sans-serif',weight:'800',size:9},color:'#94a3b8',maxRotation:45}},
-        y:{grid:{color:'rgba(0,0,0,.04)'},ticks:{font:{family:'-apple-system,BlinkMacSystemFont,SF Pro Text,Helvetica Neue,Arial,sans-serif',weight:'800',size:9},color:'#94a3b8'},beginAtZero:true}
-      }
-    }
+  freqChart=new Chart(ctx,{
+    type:chartPeriod==='dia'?'bar':'line',
+    data:{labels,datasets:[
+      {label:'Presentes',data:presData,backgroundColor:chartPeriod==='dia'?'rgba(74,222,128,0.7)':'rgba(74,222,128,0.15)',borderColor:'#4ade80',borderWidth:chartPeriod==='dia'?0:2.5,borderRadius:chartPeriod==='dia'?6:0,pointBackgroundColor:'#4ade80',pointRadius:chartPeriod==='dia'?0:4,tension:0.4,fill:chartPeriod!=='dia'},
+      {label:'Ausentes',data:ausData,backgroundColor:chartPeriod==='dia'?'rgba(248,113,113,0.7)':'rgba(248,113,113,0.1)',borderColor:'#f87171',borderWidth:chartPeriod==='dia'?0:2.5,borderRadius:chartPeriod==='dia'?6:0,pointBackgroundColor:'#f87171',pointRadius:chartPeriod==='dia'?0:4,tension:0.4,fill:chartPeriod!=='dia'}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.y} alunos`}}},scales:{x:{grid:{display:false},ticks:{font:{size:9},color:'#94a3b8',maxRotation:45}},y:{grid:{color:'rgba(0,0,0,.04)'},ticks:{font:{size:9},color:'#94a3b8'},beginAtZero:true}}}
   });
 }
 
-// Atualiza o gráfico quando dados mudam
-const _origSave = save;
-save = async function(){
-  await _origSave();
-  if(chartPeriod==='dia') loadChartData();
-};
-
-// Deletar gráfico (só admin)
-function confirmResetChart(){ openModal('delChartModal'); }
-function confirmDeleteChart(){ confirmResetChart(); }
-function doResetChart(){
-  if(freqChart){ freqChart.destroy(); freqChart=null; }
-  // Zera dados locais e recarrega gráfico zerado
-  const labels=[], presData=[], ausData=[];
+function confirmResetChart(){openModal('delChartModal');}
+function doDeleteChart(){
+  if(freqChart){freqChart.destroy();freqChart=null;}
   renderChart(['—'],[0],[0]);
   closeModal('delChartModal');
 }
-function doDeleteChart(){ doResetChart(); }
-
-// Mostrar botão deletar só para admin
-
-// Inicializa gráfico após render
-setTimeout(()=>loadChartData(), 800);
 
 // ===================== PWA - SERVICE WORKER =====================
 if('serviceWorker' in navigator){
-  window.addEventListener('load', () => {
+  window.addEventListener('load',()=>{
     navigator.serviceWorker.register('/sw.js')
-      .then(reg => console.log('SW registrado:', reg.scope))
-      .catch(err => console.log('SW erro:', err));
+      .then(reg=>console.log('SW registrado:',reg.scope))
+      .catch(err=>console.log('SW erro:',err));
   });
 }
-
 </script>
 </body>
 </html>
