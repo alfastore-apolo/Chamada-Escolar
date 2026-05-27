@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contagem Escolar - CETI Dariana</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1e40af">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Contagem">
+<link rel="apple-touch-icon" href="/icone-192.png">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Helvetica Neue',Arial,sans-serif;background:#f8fafc;color:#1e293b;min-height:100vh;padding-bottom:100px;}
+button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Helvetica Neue',Arial,sans-serif;}
+.header{background:linear-gradient(160deg,#0f172a 0%,#1e3a5f 60%,#1e40af 100%);color:white;padding:22px 20px 28px;border-radius:0 0 32px 32px;box-shadow:0 8px 30px rgba(15,23,42,.25);}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;width:100%;}
+.top-left{display:flex;align-items:center;gap:12px;}
+.brand-bar{width:4px;min-height:42px;border-radius:999px;background:linear-gradient(180deg,#38bdf8,#818cf8);flex-shrink:0;}
+.brand-text{display:flex;flex-direction:column;gap:3px;}
+.header-title{font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:900;color:white;}
+.school-name-wrap{display:flex;align-items:center;gap:5px;}
+.school-name-wrap small{font-size:14px;font-weight:900;color:#93c5fd;letter-spacing:0.2px;}
+.school-name-wrap .admin-icon-btn{background:none;border:none;cursor:pointer;padding:2px 4px;border-radius:6px;opacity:0.6;transition:opacity .2s,background .2s;font-size:12px;}
+.school-name-wrap .admin-icon-btn:hover{opacity:1;background:rgba(255,255,255,.15);}
+.top-right{display:flex;flex-direction:column;align-items:flex-end;gap:7px;}
+.badge-row{display:flex;align-items:center;gap:6px;}
+.date-input{position:absolute;opacity:0;width:0;height:0;}
+.badge{padding:5px 13px;border-radius:999px;font-size:10px;font-weight:900;letter-spacing:0.3px;}
+.online{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.25);}
+.admin-badge{background:rgba(251,191,36,.18);color:#fbbf24;border:1px solid rgba(251,191,36,.25);cursor:default;}
+.date-display{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:5px 11px;color:#cbd5e1;font-weight:800;font-size:10px;letter-spacing:0.4px;cursor:pointer;white-space:nowrap;font-variant-numeric:tabular-nums;transition:background .2s;}
+.date-display:hover{background:rgba(255,255,255,.14);}
+.date-display::before{content:"📅";font-size:11px;}
+.cards{display:flex;gap:12px;flex-direction:row;}
+.card{flex:1;border-radius:20px;padding:16px 16px;position:relative;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);}
+.circle{position:absolute;width:80px;height:80px;border-radius:50%;top:-22px;right:-22px;}
+.green-circle{background:rgba(34,197,94,.18);}
+.red-circle{background:rgba(239,68,68,.16);}
+.card-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;font-weight:900;margin-bottom:6px;}
+.green{color:#4ade80;}
+.red{color:#f87171;}
+.card-number{font-size:44px;line-height:1;font-weight:900;color:white;}
+.card-sub{margin-top:6px;color:#94a3b8;font-size:10px;font-weight:700;}
+.groups{padding:16px 12px;display:flex;flex-direction:column;gap:14px;}
+.group{border-radius:20px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.07);}
+.group-header{padding:15px 16px;color:white;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+.group-left{display:flex;align-items:center;gap:10px;}
+.group-emoji{font-size:22px;}
+.group-title{font-size:15px;font-weight:900;}
+.group-sub{font-size:11px;opacity:.8;margin-top:2px;}
+.group-total{display:flex;gap:8px;align-items:center;}
+.mini{border-radius:8px;padding:4px 10px;font-size:13px;font-weight:900;}
+.group-content{display:none;padding:10px;background:#f8fafc;flex-direction:column;gap:10px;}
+.turma{background:white;border-radius:18px;padding:14px;border:2px solid #e2e8f0;}
+.turma-title{font-size:14px;font-weight:900;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
+.counter-grid{display:flex;gap:10px;}
+.counter-box{flex:1;border-radius:14px;padding:12px;}
+.present-box{background:#f0fdf4;}
+.absent-box{background:#fef2f2;}
+.counter-label{font-size:11px;font-weight:800;margin-bottom:10px;}
+.counter{display:flex;justify-content:center;align-items:center;gap:10px;}
+.counter button{width:34px;height:34px;border-radius:50%;border:none;font-size:22px;font-weight:900;cursor:pointer;}
+.minus{background:#f1f5f9;color:#64748b;}
+.plus-green{background:#dcfce7;color:#16a34a;}
+.plus-red{background:#fee2e2;color:#dc2626;}
+.counter-value{font-size:28px;font-weight:900;min-width:40px;text-align:center;}
+.footer{position:fixed;left:0;right:0;bottom:0;background:white;border-top:1px solid #e2e8f0;padding:12px;text-align:center;display:flex;flex-direction:column;align-items:center;}
+.footer small{display:block;color:#94a3b8;margin-bottom:4px;font-weight:700;}
+.footer a{text-decoration:none;color:#16a34a;font-size:14px;font-weight:900;}
+.footer-tap-zone{position:absolute;bottom:0;left:0;width:60px;height:60px;cursor:default;z-index:10;}
+.aib{background:none;border:none;cursor:pointer;font-size:14px;padding:3px 5px;border-radius:7px;transition:background .15s,transform .1s;line-height:1;}
+.aib:hover{background:rgba(255,255,255,.2);transform:scale(1.15);}
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center;}
+.modal-backdrop.show{display:flex;}
+.modal{background:white;border-radius:24px;padding:28px 24px;width:90%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:popIn .22s ease;}
+@keyframes popIn{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
+.modal h2{font-size:17px;font-weight:900;margin-bottom:18px;color:#0f172a;}
+.modal label{display:block;font-size:12px;font-weight:800;color:#64748b;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
+.modal input[type=text],.modal input[type=password]{width:100%;border:2px solid #e2e8f0;border-radius:12px;padding:10px 14px;font-size:15px;font-weight:700;outline:none;transition:border .2s;}
+.modal input:focus{border-color:#3b82f6;}
+.modal-btns{display:flex;gap:10px;margin-top:20px;justify-content:flex-end;}
+.btn-cancel{background:#f1f5f9;color:#64748b;border:none;border-radius:12px;padding:10px 18px;font-weight:800;cursor:pointer;font-size:14px;}
+.btn-confirm{background:linear-gradient(135deg,#1e40af,#3b82f6);color:white;border:none;border-radius:12px;padding:10px 20px;font-weight:900;cursor:pointer;font-size:14px;}
+.btn-danger{background:linear-gradient(135deg,#dc2626,#ef4444);color:white;border:none;border-radius:12px;padding:10px 18px;font-weight:800;cursor:pointer;font-size:14px;}
+.modal-error{color:#ef4444;font-size:12px;font-weight:800;margin-top:8px;display:none;}
+.modal-error.show{display:block;}
+#pwModal .lock-icon{font-size:40px;text-align:center;margin-bottom:12px;}
+#pwModal h2{text-align:center;}
+#adminPanel{display:none;position:fixed;inset:0;background:#f0f4ff;z-index:900;overflow-y:auto;padding-bottom:80px;}
+#adminPanel.show{display:block;}
+.ap-header{background:linear-gradient(135deg,#0f172a,#1e40af);padding:22px 18px 18px;color:white;border-radius:0 0 24px 24px;margin-bottom:16px;}
+.ap-title{font-size:16px;font-weight:900;letter-spacing:1px;text-transform:uppercase;}
+.ap-subtitle{font-size:12px;color:#94a3b8;margin-top:4px;}
+.ap-close{float:right;background:rgba(255,255,255,.12);border:none;color:white;border-radius:10px;padding:6px 14px;font-weight:800;cursor:pointer;font-size:13px;}
+.ap-section{background:white;border-radius:20px;margin:0 12px 14px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.ap-section-title{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+.ap-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f1f5f9;}
+.ap-row:last-child{border-bottom:none;padding-bottom:0;}
+.ap-row-label{font-size:14px;font-weight:800;color:#1e293b;}
+.ap-row-sub{font-size:11px;color:#94a3b8;font-weight:700;}
+.ap-row-icons{display:flex;gap:6px;}
+.ap-icon-btn{width:32px;height:32px;border:none;border-radius:9px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s;}
+.ap-icon-btn:hover{transform:scale(1.12);}
+.edit-btn{background:#eff6ff;color:#2563eb;}
+.del-btn{background:#fef2f2;color:#dc2626;}
+.add-btn-row{background:#f0fdf4;color:#16a34a;}
+.ap-add-btn{width:100%;background:linear-gradient(135deg,#16a34a,#22c55e);color:white;border:none;border-radius:12px;padding:11px;font-weight:900;font-size:14px;cursor:pointer;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:6px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Arial,sans-serif;}
+.ap-add-btn:hover{opacity:.92;}
+.chart-section{margin:0 12px 16px;background:white;border-radius:24px;box-shadow:0 2px 12px rgba(0,0,0,.07);overflow:hidden;}
+.chart-header{padding:16px 18px 0;display:flex;justify-content:space-between;align-items:flex-start;}
+.chart-title-block{display:flex;flex-direction:column;gap:2px;}
+.chart-title{font-size:13px;font-weight:900;color:#0f172a;letter-spacing:0.3px;}
+.chart-subtitle{font-size:10px;color:#94a3b8;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;}
+.chart-tabs{display:flex;gap:4px;background:#f1f5f9;border-radius:10px;padding:3px;}
+.chart-tab{border:none;background:none;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:800;color:#64748b;cursor:pointer;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Arial,sans-serif;transition:all .18s;}
+.chart-tab.active{background:white;color:#1e40af;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+.chart-body{padding:14px 12px 16px;position:relative;height:200px;}
+.chart-body canvas{width:100%!important;height:100%!important;}
+.chart-legend{display:flex;gap:16px;justify-content:center;padding:0 18px 14px;}
+.chart-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:800;color:#64748b;}
+.chart-legend-dot{width:10px;height:10px;border-radius:50%;}
+
+/* Toast notification */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#0f172a;color:white;padding:10px 20px;border-radius:12px;font-size:13px;font-weight:800;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<div id="app">
+<div class="header">
+  <div class="top">
+    <div class="top-left">
+      <div class="brand-bar"></div>
+      <div class="brand-text">
+        <div class="header-title">CONTAGEM ESCOLAR</div>
+        <div class="school-name-wrap">
+          <small id="schoolNameLabel">CETI Dariana</small>
+          <button class="admin-icon-btn" id="editSchoolNameBtn" style="display:none" title="Editar nome" onclick="openEditSchoolName()">✏️</button>
+        </div>
+      </div>
+    </div>
+    <div class="top-right">
+      <div class="badge-row">
+        <div class="badge online">🟢 Tempo Real</div>
+        <div class="badge admin-badge" id="adminBadge" style="display:none">🔐 Admin</div>
+      </div>
+      <input type="date" id="dateInput" style="position:absolute;opacity:0;width:0;height:0;pointer-events:none;">
+      <span class="date-display" id="dateDisplay" title="Clique para alterar a data"></span>
+    </div>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <div class="circle green-circle"></div>
+      <div class="card-label green">✅ Presentes</div>
+      <div class="card-number" id="totalPresentes">0</div>
+      <div class="card-sub">alunos presentes hoje</div>
+    </div>
+    <div class="card">
+      <div class="circle red-circle"></div>
+      <div class="card-label red">❌ Ausentes</div>
+      <div class="card-number" id="totalFaltosos">0</div>
+      <div class="card-sub">ausências registradas</div>
+    </div>
+  </div>
+</div>
+
+<div class="groups" id="groups"></div>
+
+<div class="chart-section" id="chartSection">
+  <div class="chart-header">
+    <div class="chart-title-block">
+      <div class="chart-title">📈 Frequência Escolar</div>
+      <div class="chart-subtitle">Presenças e Ausências</div>
+    </div>
+    <div class="chart-tabs">
+      <button class="chart-tab active" onclick="setChartPeriod('dia',this)">Dia</button>
+      <button class="chart-tab" onclick="setChartPeriod('semana',this)">Semana</button>
+      <button class="chart-tab" onclick="setChartPeriod('mes',this)">Mês</button>
+    </div>
+  </div>
+  <div class="chart-body"><canvas id="freqChart"></canvas></div>
+  <div class="chart-legend">
+    <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#4ade80"></div>Presentes</div>
+    <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#f87171"></div>Ausentes</div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-tap-zone" id="footerTapZone"></div>
+  <small>Desenvolvido por <strong>Alfa Store</strong> — Soluções e Tecnologia</small>
+  <a href="https://wa.me/5592994810508" target="_blank">📱 Suporte — (92) 99481-0508</a>
+</div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+  <div class="ap-header">
+    <button class="ap-close" onclick="closeAdmin()">✕ Fechar</button>
+    <div class="ap-title">⚙️ Painel Administrativo</div>
+    <div class="ap-subtitle">Gerencie escola, séries e anos</div>
+  </div>
+  <div class="ap-section">
+    <div class="ap-section-title">🏫 Nome da Escola</div>
+    <div class="ap-row">
+      <div>
+        <div class="ap-row-label" id="apSchoolName">CETI Dariana</div>
+        <div class="ap-row-sub">Nome exibido no topo</div>
+      </div>
+      <div class="ap-row-icons">
+        <button class="ap-icon-btn edit-btn" onclick="openEditSchoolName()">✏️</button>
+      </div>
+    </div>
+  </div>
+  <div class="ap-section">
+    <div class="ap-section-title">📚 Séries e Anos</div>
+    <div id="apGroupList"></div>
+    <button class="ap-add-btn" onclick="openAddGroup()">➕ Adicionar Série / Ano</button>
+  </div>
+  <div class="ap-section" id="apTurmasSection" style="display:none">
+    <div class="ap-section-title" id="apTurmasSectionTitle">📋 Turmas</div>
+    <div id="apTurmaList"></div>
+    <button class="ap-add-btn" id="apAddTurmaBtn">➕ Adicionar Turma</button>
+  </div>
+  <div class="ap-section">
+    <div class="ap-section-title">🔄 Reset Manual</div>
+    <div class="ap-row">
+      <div>
+        <div class="ap-row-label">Zerar contadores do dia</div>
+        <div class="ap-row-sub">Reseta todas as presenças e ausências de hoje para zero</div>
+      </div>
+      <div class="ap-row-icons">
+        <button class="ap-icon-btn" style="background:#fff7ed;color:#ea580c;width:auto;padding:0 12px;font-size:12px;font-weight:900;" onclick="confirmManualReset()">↺ Zerar</button>
+      </div>
+    </div>
+  </div>
+  <div class="ap-section">
+    <div class="ap-section-title">📈 Gráfico de Frequência</div>
+    <div class="ap-row">
+      <div>
+        <div class="ap-row-label">Resetar Gráfico</div>
+        <div class="ap-row-sub">Zera todos os dados do gráfico atual</div>
+      </div>
+      <div class="ap-row-icons">
+        <button class="ap-icon-btn" style="background:#fff7ed;color:#ea580c;width:auto;padding:0 12px;font-size:12px;font-weight:900;" onclick="confirmResetChart()">↺ Resetar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAIS -->
+<div class="modal-backdrop" id="pwModal">
+  <div class="modal">
+    <div class="lock-icon">🔐</div>
+    <h2>Acesso Restrito</h2>
+    <div style="margin-bottom:6px">
+      <label>Palavra-chave</label>
+      <input type="password" id="pwInput" placeholder="Digite a senha" onkeydown="if(event.key==='Enter')checkPassword()">
+      <div class="modal-error" id="pwError">Senha incorreta. Tente novamente.</div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('pwModal')">Cancelar</button>
+      <button class="btn-confirm" onclick="checkPassword()">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="editSchoolModal">
+  <div class="modal">
+    <h2>✏️ Editar Nome da Escola</h2>
+    <label>Nome da Escola</label>
+    <input type="text" id="editSchoolInput" placeholder="Ex: CETI Dariana">
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('editSchoolModal')">Cancelar</button>
+      <button class="btn-confirm" onclick="saveSchoolName()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="groupModal">
+  <div class="modal">
+    <h2 id="groupModalTitle">➕ Nova Série / Ano</h2>
+    <div style="margin-bottom:12px">
+      <label>Nome</label>
+      <input type="text" id="groupNameInput" placeholder="Ex: 1ª Série — Médio">
+    </div>
+    <div style="margin-bottom:12px">
+      <label>Emoji</label>
+      <input type="text" id="groupEmojiInput" placeholder="Ex: 🔵" maxlength="4">
+    </div>
+    <div style="margin-bottom:4px">
+      <label>Cor</label>
+      <input type="text" id="groupColorInput" placeholder="Ex: #2563eb">
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('groupModal')">Cancelar</button>
+      <button class="btn-confirm" onclick="saveGroup()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="delGroupModal">
+  <div class="modal">
+    <h2>🗑️ Excluir Série/Ano</h2>
+    <p style="color:#64748b;font-size:14px;margin-bottom:18px">Tem certeza que deseja excluir <strong id="delGroupName"></strong> e todas as suas turmas?</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('delGroupModal')">Cancelar</button>
+      <button class="btn-danger" onclick="confirmDeleteGroup()">Excluir</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="turmaModal">
+  <div class="modal">
+    <h2 id="turmaModalTitle">➕ Nova Turma</h2>
+    <label>Nome da Turma</label>
+    <input type="text" id="turmaNameInput" placeholder="Ex: 1ª Série 3">
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('turmaModal')">Cancelar</button>
+      <button class="btn-confirm" onclick="saveTurma()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="delTurmaModal">
+  <div class="modal">
+    <h2>🗑️ Excluir Turma</h2>
+    <p style="color:#64748b;font-size:14px;margin-bottom:18px">Deseja excluir a turma <strong id="delTurmaName"></strong>?</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('delTurmaModal')">Cancelar</button>
+      <button class="btn-danger" onclick="confirmDeleteTurma()">Excluir</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="delChartModal">
+  <div class="modal">
+    <h2>🗑️ Resetar Gráfico</h2>
+    <p style="color:#64748b;font-size:14px;margin-bottom:18px">Deseja zerar os dados do gráfico?</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('delChartModal')">Cancelar</button>
+      <button class="btn-danger" onclick="doDeleteChart()">Resetar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="manualResetModal">
+  <div class="modal">
+    <h2>🔄 Zerar Contadores</h2>
+    <p style="color:#64748b;font-size:14px;margin-bottom:18px">Isso irá zerar todas as presenças e ausências do dia de hoje. Os dados serão salvos no histórico antes de zerar.</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('manualResetModal')">Cancelar</button>
+      <button class="btn-danger" onclick="doManualReset()">Zerar agora</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===================== FIREBASE =====================
+const firebaseConfig = {
+  apiKey: "AIzaSyA7UyPUc0MkrT5eTrNtnXr9mex8QPcEj_Y",
+  authDomain: "chamada--escolar.firebaseapp.com",
+  databaseURL: "https://chamada--escolar-default-rtdb.firebaseio.com",
+  projectId: "chamada--escolar",
+  storageBucket: "chamada--escolar.firebasestorage.app",
+  messagingSenderId: "678870294819",
+  appId: "1:678870294819:web:05221666ddd030b90c2c96"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const SCHOOL_ID = "ceti-dariana";
+
+// ===================== ESTADO =====================
+let isAdmin = false;
+let editingGroupIndex = null;
+let deletingGroupIndex = null;
+let activeGroupIndexForTurma = null;
+let editingTurmaIndex = null;
+let deletingTurmaIndex = null;
+let schoolName = "CETI Dariana";
+let rendered = false;
+let realtimeRef = null;
+let freqChart = null;
+let chartPeriod = 'dia';
+
+let grupos = [
+  {id:"fundamental8",label:"8º Ano — Fundamental",emoji:"📘",cor:"#ea580c",
+   turmas:[{id:"8ano1",label:"8º Ano 1"},{id:"8ano2",label:"8º Ano 2"},{id:"8ano3",label:"8º Ano 3"},{id:"8ano4",label:"8º Ano 4"},{id:"8ano5",label:"8º Ano 5"}]},
+  {id:"fundamental9",label:"9º Ano — Fundamental",emoji:"📚",cor:"#d97706",
+   turmas:[{id:"9ano1",label:"9º Ano 1"},{id:"9ano2",label:"9º Ano 2"},{id:"9ano3",label:"9º Ano 3"},{id:"9ano4",label:"9º Ano 4"},{id:"9ano5",label:"9º Ano 5"}]},
+  {id:"serie1",label:"1ª Série — Médio",emoji:"🔵",cor:"#2563eb",
+   turmas:[{id:"1serie1",label:"1ª Série 1"},{id:"1serie2",label:"1ª Série 2"},{id:"1serie3",label:"1ª Série 3"},{id:"1serie4",label:"1ª Série 4"},{id:"1serie5",label:"1ª Série 5"},{id:"1serie6",label:"1ª Série 6"},{id:"1serie7",label:"1ª Série 7"},{id:"1serie8",label:"1ª Série 8"},{id:"1serie9",label:"1ª Série 9"}]},
+  {id:"serie2",label:"2ª Série — Médio",emoji:"🟣",cor:"#7c3aed",
+   turmas:[{id:"2serie1",label:"2ª Série 1"},{id:"2serie2",label:"2ª Série 2"},{id:"2serie3",label:"2ª Série 3"},{id:"2serie4",label:"2ª Série 4"},{id:"2serie5",label:"2ª Série 5"}]},
+  {id:"serie3",label:"3ª Série — Médio",emoji:"🟢",cor:"#16a34a",
+   turmas:[{id:"3serie1",label:"3ª Série 1"},{id:"3serie2",label:"3ª Série 2"},{id:"3serie3",label:"3ª Série 3"}]}
+];
+
+function buildData(){
+  const data={};
+  grupos.forEach(g=>g.turmas.forEach(t=>{data[t.id]={p:0,f:0};}));
+  return data;
+}
+let dados = buildData();
+
+// ===================== DATA =====================
+function pad2(n){return String(n).padStart(2,"0");}
+function todayStr(){
+  const d=new Date();
+  return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+}
+
+document.getElementById("dateInput").value = todayStr();
+
+function updateDateDisplay(val){
+  if(!val){document.getElementById("dateDisplay").innerText="";return;}
+  const [y,m,d]=val.split("-");
+  const days=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+  const dt=new Date(Number(y),Number(m)-1,Number(d));
+  document.getElementById("dateDisplay").innerText=days[dt.getDay()]+", "+d+"/"+m+"/"+y;
+}
+updateDateDisplay(todayStr());
+document.getElementById("dateDisplay").onclick=function(){
+  const inp=document.getElementById("dateInput");
+  if(inp.showPicker) inp.showPicker(); else inp.click();
+};
+
+// ===================== RESET ROBUSTO À MEIA-NOITE =====================
+// Estratégia: salva "lastDate" no Firebase. Ao abrir o app (ou ao retornar do
+// segundo plano via visibilitychange + Page Lifecycle), compara com hoje.
+// Se forem datas diferentes → arquiva o dia anterior e zera.
+
+async function checkAndResetIfNewDay(){
+  const date = todayStr();
+  const snap = await db.ref(`escolas/${SCHOOL_ID}/meta/lastDate`).get();
+  const lastDate = snap.exists() ? snap.val() : null;
+
+  if(lastDate && lastDate !== date){
+    // Arquiva o dia anterior no histórico
+    const prevSnap = await db.ref(`escolas/${SCHOOL_ID}/dias/${lastDate}`).get();
+    if(prevSnap.exists()){
+      await db.ref(`escolas/${SCHOOL_ID}/historico/${lastDate}`)
+        .set({...prevSnap.val(), encerradoEm: new Date().toISOString()});
+    }
+    // Zera o dia atual
+    const dadosZerados = buildData();
+    await db.ref(`escolas/${SCHOOL_ID}/dias/${date}`).set({value: dadosZerados});
+    showToast("🌅 Novo dia! Contadores zerados automaticamente.");
+  }
+
+  // Atualiza lastDate para hoje
+  await db.ref(`escolas/${SCHOOL_ID}/meta/lastDate`).set(date);
+
+  // Garante que o dateInput está com hoje
+  document.getElementById("dateInput").value = date;
+  updateDateDisplay(date);
+}
+
+// Dispara ao abrir o app
+// Dispara ao retornar do segundo plano (visibilitychange)
+document.addEventListener("visibilitychange", () => {
+  if(document.visibilityState === "visible"){
+    checkAndResetIfNewDay().then(() => {
+      // Se a data mudou enquanto estava em background, recarrega dados
+      const currentDate = document.getElementById("dateInput").value;
+      const today = todayStr();
+      if(currentDate !== today){
+        rendered = false;
+        realtime();
+      }
+    });
+  }
+});
+
+// Page Lifecycle API (freeze/resume)
+window.addEventListener("resume", () => {
+  checkAndResetIfNewDay().then(() => realtime());
+});
+
+// ===================== RENDER =====================
+const groupsEl = document.getElementById("groups");
+
+function render(){
+  if(rendered){updateValues();return;}
+  rendered=true;
+  groupsEl.innerHTML="";
+  grupos.forEach((grupo,gi)=>{
+    let totalP=0,totalF=0;
+    grupo.turmas.forEach(t=>{totalP+=dados[t.id]?.p||0;totalF+=dados[t.id]?.f||0;});
+    const group=document.createElement("div");
+    group.className="group";
+    group.dataset.groupId=grupo.id;
+    group.innerHTML=`
+      <div class="group-header" style="background:${grupo.cor}">
+        <div class="group-left">
+          <div class="group-emoji">${grupo.emoji}</div>
+          <div>
+            <div class="group-title">${grupo.label}</div>
+            <div class="group-sub">${grupo.turmas.length} turmas</div>
+          </div>
+        </div>
+        <div class="group-total">
+          <div class="mini group-p" style="background:rgba(255,255,255,.18)">✅ ${totalP}</div>
+          <div class="mini group-f" style="background:rgba(0,0,0,.16)">❌ ${totalF}</div>
+          <div class="group-admin-icons admin-only" style="display:none;gap:4px;">
+            <button class="aib" title="Editar" onclick="event.stopPropagation();openEditGroup(${gi})">✏️</button>
+            <button class="aib" title="Excluir" onclick="event.stopPropagation();openDeleteGroup(${gi})">🗑️</button>
+            <button class="aib" title="Turmas" onclick="event.stopPropagation();openTurmasAdmin(${gi})">📋</button>
+          </div>
+        </div>
+      </div>
+      <div class="group-content"></div>
+    `;
+    const header=group.querySelector(".group-header");
+    const content=group.querySelector(".group-content");
+    header.onclick=()=>{content.style.display=content.style.display==="flex"?"none":"flex";};
+    grupo.turmas.forEach(turma=>{
+      const p=dados[turma.id]?.p||0;
+      const f=dados[turma.id]?.f||0;
+      const turmaEl=document.createElement("div");
+      turmaEl.className="turma";
+      turmaEl.dataset.turmaId=turma.id;
+      turmaEl.innerHTML=`
+        <div class="turma-title">${turma.label}</div>
+        <div class="counter-grid">
+          <div class="counter-box present-box">
+            <div class="counter-label green">✅ Presentes</div>
+            <div class="counter">
+              <button class="minus">−</button>
+              <div class="counter-value green turma-p">${p}</div>
+              <button class="plus-green">+</button>
+            </div>
+          </div>
+          <div class="counter-box absent-box">
+            <div class="counter-label red">❌ Ausentes</div>
+            <div class="counter">
+              <button class="minus">−</button>
+              <div class="counter-value red turma-f">${f}</div>
+              <button class="plus-red">+</button>
+            </div>
+          </div>
+        </div>
+      `;
+      const buttons=turmaEl.querySelectorAll("button");
+      buttons[0].onclick=async()=>{dados[turma.id].p=Math.max(0,dados[turma.id].p-1);await save();};
+      buttons[1].onclick=async()=>{dados[turma.id].p++;await save();};
+      buttons[2].onclick=async()=>{dados[turma.id].f=Math.max(0,dados[turma.id].f-1);await save();};
+      buttons[3].onclick=async()=>{dados[turma.id].f++;await save();};
+      content.appendChild(turmaEl);
+    });
+    groupsEl.appendChild(group);
+  });
+  updateTotals();
+  applyAdminUI();
+}
+
+function updateValues(){
+  grupos.forEach(grupo=>{
+    let totalP=0,totalF=0;
+    grupo.turmas.forEach(turma=>{
+      const p=dados[turma.id]?.p||0;
+      const f=dados[turma.id]?.f||0;
+      totalP+=p;totalF+=f;
+      const turmaEl=groupsEl.querySelector(`[data-turma-id="${turma.id}"]`);
+      if(turmaEl){turmaEl.querySelector(".turma-p").innerText=p;turmaEl.querySelector(".turma-f").innerText=f;}
+    });
+    const groupEl=groupsEl.querySelector(`[data-group-id="${grupo.id}"]`);
+    if(groupEl){groupEl.querySelector(".group-p").innerText=`✅ ${totalP}`;groupEl.querySelector(".group-f").innerText=`❌ ${totalF}`;}
+  });
+  updateTotals();
+}
+
+function updateTotals(){
+  let p=0,f=0;
+  Object.values(dados).forEach(v=>{p+=v.p||0;f+=v.f||0;});
+  document.getElementById("totalPresentes").innerText=p;
+  document.getElementById("totalFaltosos").innerText=f;
+}
+
+// ===================== FIREBASE SAVE / REALTIME =====================
+async function save(){
+  const date=document.getElementById("dateInput").value;
+  await db.ref(`escolas/${SCHOOL_ID}/dias/${date}`).set({value:dados});
+  if(chartPeriod==='dia') loadChartData();
+}
+
+async function saveGrupos(){
+  await db.ref(`escolas/${SCHOOL_ID}/config/grupos`).set(grupos);
+  await db.ref(`escolas/${SCHOOL_ID}/config/schoolName`).set(schoolName);
+}
+
+function realtime(){
+  const date=document.getElementById("dateInput").value;
+  if(realtimeRef) realtimeRef.off();
+  realtimeRef=db.ref(`escolas/${SCHOOL_ID}/dias/${date}`);
+  realtimeRef.on("value",snapshot=>{
+    const data=snapshot.val();
+    if(data&&data.value){dados=data.value;}else{dados=buildData();}
+    render();
+  });
+}
+
+// ===================== RESET MANUAL (ADMIN) =====================
+function confirmManualReset(){ openModal('manualResetModal'); }
+async function doManualReset(){
+  const date = document.getElementById("dateInput").value;
+  // Arquiva antes de zerar
+  const snap = await db.ref(`escolas/${SCHOOL_ID}/dias/${date}`).get();
+  if(snap.exists()){
+    await db.ref(`escolas/${SCHOOL_ID}/historico/${date}_manual`)
+      .set({...snap.val(), encerradoEm: new Date().toISOString(), tipo:'manual'});
+  }
+  dados = buildData();
+  await save();
+  closeModal('manualResetModal');
+  showToast("✅ Contadores zerados com sucesso!");
+}
+
+// ===================== TOAST =====================
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.innerText=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+// ===================== INIT =====================
+db.ref(`escolas/${SCHOOL_ID}/config`).get().then(snap=>{
+  if(snap.exists()){
+    const config=snap.val();
+    if(config.grupos) grupos=config.grupos;
+    if(config.schoolName){
+      schoolName=config.schoolName;
+      document.getElementById("schoolNameLabel").innerText=schoolName;
+      document.getElementById("apSchoolName").innerText=schoolName;
+    }
+  }
+  dados=buildData();
+
+  document.getElementById("dateInput").addEventListener("change",function(){
+    updateDateDisplay(this.value);
+    rendered=false;
+    realtime();
+  });
+
+  // Verifica reset de dia ANTES de iniciar o realtime
+  checkAndResetIfNewDay().then(()=>{
+    render();
+    realtime();
+    setTimeout(()=>loadChartData(),800);
+  });
+});
+
+// ===================== DOUBLE TAP FOOTER =====================
+const footerTapZone=document.getElementById("footerTapZone");
+footerTapZone.addEventListener("dblclick",()=>{
+  if(isAdmin){openAdmin();return;}
+  openModal("pwModal");
+  setTimeout(()=>document.getElementById("pwInput").focus(),100);
+});
+let lastTap=0;
+footerTapZone.addEventListener("touchend",e=>{
+  const now=Date.now();
+  if(now-lastTap<350){
+    e.preventDefault();
+    if(isAdmin){openAdmin();return;}
+    openModal("pwModal");
+    setTimeout(()=>document.getElementById("pwInput").focus(),100);
+  }
+  lastTap=now;
+});
+
+// ===================== SENHA =====================
+let pwAttempts=0,pwLockUntil=0;
+async function sha256(text){
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function checkPassword(){
+  const now=Date.now();
+  if(now<pwLockUntil){
+    const secs=Math.ceil((pwLockUntil-now)/1000);
+    document.getElementById("pwError").innerText=`Muitas tentativas. Aguarde ${secs}s.`;
+    document.getElementById("pwError").classList.add("show");
+    return;
+  }
+  const val=document.getElementById("pwInput").value;
+  const hash=await sha256(val);
+  const correctHash=await sha256("Atlanta");
+  if(hash===correctHash){
+    pwAttempts=0;
+    isAdmin=true;
+    closeModal("pwModal");
+    document.getElementById("pwInput").value="";
+    document.getElementById("pwError").classList.remove("show");
+    applyAdminUI();
+    openAdmin();
+  } else {
+    pwAttempts++;
+    document.getElementById("pwInput").value="";
+    document.getElementById("pwInput").focus();
+    if(pwAttempts>=5){
+      pwLockUntil=Date.now()+30000;
+      pwAttempts=0;
+      document.getElementById("pwError").innerText=`Bloqueado por 30 segundos.`;
+    } else {
+      document.getElementById("pwError").innerText=`Senha incorreta. Tentativa ${pwAttempts}/5.`;
+    }
+    document.getElementById("pwError").classList.add("show");
+  }
+}
+
+function applyAdminUI(){
+  document.querySelectorAll(".admin-only").forEach(el=>el.style.display=isAdmin?"flex":"none");
+  document.getElementById("adminBadge").style.display=isAdmin?"flex":"none";
+  document.getElementById("editSchoolNameBtn").style.display=isAdmin?"inline-flex":"none";
+}
+
+// ===================== ADMIN PANEL =====================
+function openAdmin(){renderAdminPanel();document.getElementById("adminPanel").classList.add("show");}
+function closeAdmin(){document.getElementById("adminPanel").classList.remove("show");document.getElementById("apTurmasSection").style.display="none";}
+
+function renderAdminPanel(){
+  document.getElementById("apSchoolName").innerText=schoolName;
+  const list=document.getElementById("apGroupList");
+  list.innerHTML="";
+  grupos.forEach((g,gi)=>{
+    const row=document.createElement("div");
+    row.className="ap-row";
+    row.innerHTML=`
+      <div style="cursor:pointer" onclick="openTurmasAdmin(${gi})">
+        <div class="ap-row-label">${g.emoji} ${g.label}</div>
+        <div class="ap-row-sub">${g.turmas.length} turmas — clique para gerenciar</div>
+      </div>
+      <div class="ap-row-icons">
+        <button class="ap-icon-btn edit-btn" onclick="openEditGroup(${gi})">✏️</button>
+        <button class="ap-icon-btn del-btn" onclick="openDeleteGroup(${gi})">🗑️</button>
+        <button class="ap-icon-btn add-btn-row" onclick="openTurmasAdmin(${gi})">📋</button>
+      </div>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function openTurmasAdmin(gi){
+  activeGroupIndexForTurma=gi;
+  document.getElementById("apTurmasSectionTitle").innerText=`📋 Turmas — ${grupos[gi].label}`;
+  renderTurmasList(gi);
+  document.getElementById("apTurmasSection").style.display="block";
+  document.getElementById("apAddTurmaBtn").onclick=()=>openAddTurma(gi);
+  document.getElementById("apTurmasSection").scrollIntoView({behavior:"smooth"});
+}
+
+function renderTurmasList(gi){
+  const g=grupos[gi];
+  const list=document.getElementById("apTurmaList");
+  list.innerHTML="";
+  g.turmas.forEach((t,ti)=>{
+    const row=document.createElement("div");
+    row.className="ap-row";
+    row.innerHTML=`
+      <div class="ap-row-label">${t.label}</div>
+      <div class="ap-row-icons">
+        <button class="ap-icon-btn edit-btn" onclick="openEditTurma(${gi},${ti})">✏️</button>
+        <button class="ap-icon-btn del-btn" onclick="openDeleteTurma(${gi},${ti})">🗑️</button>
+      </div>
+    `;
+    list.appendChild(row);
+  });
+}
+
+// ===================== MODAIS =====================
+function openModal(id){document.getElementById(id).classList.add("show");}
+function closeModal(id){document.getElementById(id).classList.remove("show");}
+
+function openEditSchoolName(){
+  document.getElementById("editSchoolInput").value=schoolName;
+  openModal("editSchoolModal");
+  setTimeout(()=>document.getElementById("editSchoolInput").focus(),100);
+}
+function saveSchoolName(){
+  const v=document.getElementById("editSchoolInput").value.trim();
+  if(!v)return;
+  schoolName=v;
+  document.getElementById("schoolNameLabel").innerText=schoolName;
+  document.getElementById("apSchoolName").innerText=schoolName;
+  closeModal("editSchoolModal");
+  saveGrupos();
+}
+
+function openAddGroup(){
+  editingGroupIndex=null;
+  document.getElementById("groupModalTitle").innerText="➕ Nova Série / Ano";
+  document.getElementById("groupNameInput").value="";
+  document.getElementById("groupEmojiInput").value="";
+  document.getElementById("groupColorInput").value="#3b82f6";
+  openModal("groupModal");
+}
+function openEditGroup(gi){
+  editingGroupIndex=gi;
+  const g=grupos[gi];
+  document.getElementById("groupModalTitle").innerText="✏️ Editar Série / Ano";
+  document.getElementById("groupNameInput").value=g.label;
+  document.getElementById("groupEmojiInput").value=g.emoji;
+  document.getElementById("groupColorInput").value=g.cor;
+  openModal("groupModal");
+}
+function saveGroup(){
+  const label=document.getElementById("groupNameInput").value.trim();
+  const emoji=document.getElementById("groupEmojiInput").value.trim()||"📖";
+  const cor=document.getElementById("groupColorInput").value.trim()||"#3b82f6";
+  if(!label)return;
+  if(editingGroupIndex===null){
+    const id="grupo_"+Date.now();
+    grupos.push({id,label,emoji,cor,turmas:[]});
+    dados=buildData();
+  }else{
+    grupos[editingGroupIndex].label=label;
+    grupos[editingGroupIndex].emoji=emoji;
+    grupos[editingGroupIndex].cor=cor;
+  }
+  closeModal("groupModal");
+  rendered=false;
+  render();
+  renderAdminPanel();
+  saveGrupos();
+}
+function openDeleteGroup(gi){deletingGroupIndex=gi;document.getElementById("delGroupName").innerText=grupos[gi].label;openModal("delGroupModal");}
+function confirmDeleteGroup(){
+  if(deletingGroupIndex===null)return;
+  grupos.splice(deletingGroupIndex,1);
+  dados=buildData();
+  closeModal("delGroupModal");
+  document.getElementById("apTurmasSection").style.display="none";
+  rendered=false;
+  render();
+  renderAdminPanel();
+  saveGrupos();
+}
+function openAddTurma(gi){
+  editingTurmaIndex=null;
+  activeGroupIndexForTurma=gi;
+  document.getElementById("turmaModalTitle").innerText="➕ Nova Turma";
+  document.getElementById("turmaNameInput").value="";
+  openModal("turmaModal");
+}
+function openEditTurma(gi,ti){
+  activeGroupIndexForTurma=gi;
+  editingTurmaIndex=ti;
+  document.getElementById("turmaModalTitle").innerText="✏️ Editar Turma";
+  document.getElementById("turmaNameInput").value=grupos[gi].turmas[ti].label;
+  openModal("turmaModal");
+}
+function saveTurma(){
+  const label=document.getElementById("turmaNameInput").value.trim();
+  if(!label)return;
+  const gi=activeGroupIndexForTurma;
+  if(editingTurmaIndex===null){
+    const id="turma_"+Date.now();
+    grupos[gi].turmas.push({id,label});
+    dados[id]={p:0,f:0};
+  }else{
+    grupos[gi].turmas[editingTurmaIndex].label=label;
+  }
+  closeModal("turmaModal");
+  rendered=false;
+  render();
+  renderAdminPanel();
+  renderTurmasList(gi);
+  document.getElementById("apTurmasSection").style.display="block";
+  saveGrupos();
+}
+function openDeleteTurma(gi,ti){
+  activeGroupIndexForTurma=gi;
+  deletingTurmaIndex=ti;
+  document.getElementById("delTurmaName").innerText=grupos[gi].turmas[ti].label;
+  openModal("delTurmaModal");
+}
+function confirmDeleteTurma(){
+  const gi=activeGroupIndexForTurma;
+  grupos[gi].turmas.splice(deletingTurmaIndex,1);
+  dados=buildData();
+  closeModal("delTurmaModal");
+  rendered=false;
+  render();
+  renderAdminPanel();
+  renderTurmasList(gi);
+  saveGrupos();
+}
+document.querySelectorAll(".modal-backdrop").forEach(bd=>{
+  bd.addEventListener("click",e=>{if(e.target===bd)bd.classList.remove("show");});
+});
+
+// ===================== GRÁFICO =====================
+function setChartPeriod(period,btn){
+  chartPeriod=period;
+  document.querySelectorAll('.chart-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  loadChartData();
+}
+
+async function loadChartData(){
+  const today=document.getElementById('dateInput').value;
+  const [y,m,d]=today.split('-').map(Number);
+  let labels=[],presData=[],ausData=[];
+
+  if(chartPeriod==='dia'){
+    labels=grupos.flatMap(g=>g.turmas.map(t=>t.label.split(' ').slice(0,2).join(' ')));
+    presData=grupos.flatMap(g=>g.turmas.map(t=>dados[t.id]?.p||0));
+    ausData=grupos.flatMap(g=>g.turmas.map(t=>dados[t.id]?.f||0));
+  } else if(chartPeriod==='semana'){
+    const days=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+    for(let i=6;i>=0;i--){
+      const dt=new Date(y,m-1,d-i);
+      const key=dt.toISOString().slice(0,10);
+      labels.push(days[dt.getDay()]);
+      try{
+        const snap=await db.ref(`escolas/${SCHOOL_ID}/dias/${key}`).get();
+        if(snap.exists()){const val=snap.val().value||{};let p=0,f=0;Object.values(val).forEach(v=>{p+=v.p||0;f+=v.f||0;});presData.push(p);ausData.push(f);}
+        else{presData.push(0);ausData.push(0);}
+      }catch(e){presData.push(0);ausData.push(0);}
+    }
+  } else if(chartPeriod==='mes'){
+    const daysInMonth=new Date(y,m,0).getDate();
+    const weeksPres=[0,0,0,0,0],weeksAus=[0,0,0,0,0];
+    const promises=[];
+    for(let dd=1;dd<=daysInMonth;dd++){
+      const key=`${y}-${pad2(m)}-${pad2(dd)}`;
+      const wk=Math.floor((dd-1)/7);
+      promises.push(db.ref(`escolas/${SCHOOL_ID}/dias/${key}`).get().then(snap=>{
+        if(snap.exists()){const val=snap.val().value||{};let p=0,f=0;Object.values(val).forEach(v=>{p+=v.p||0;f+=v.f||0;});weeksPres[wk]+=p;weeksAus[wk]+=f;}
+      }).catch(()=>{}));
+    }
+    await Promise.all(promises);
+    const numWeeks=Math.ceil(daysInMonth/7);
+    for(let w=0;w<numWeeks;w++){labels.push('Sem '+(w+1));presData.push(weeksPres[w]);ausData.push(weeksAus[w]);}
+  }
+  renderChart(labels,presData,ausData);
+}
+
+function renderChart(labels,presData,ausData){
+  const ctx=document.getElementById('freqChart').getContext('2d');
+  if(freqChart) freqChart.destroy();
+  freqChart=new Chart(ctx,{
+    type:chartPeriod==='dia'?'bar':'line',
+    data:{labels,datasets:[
+      {label:'Presentes',data:presData,backgroundColor:chartPeriod==='dia'?'rgba(74,222,128,0.7)':'rgba(74,222,128,0.15)',borderColor:'#4ade80',borderWidth:chartPeriod==='dia'?0:2.5,borderRadius:chartPeriod==='dia'?6:0,pointBackgroundColor:'#4ade80',pointRadius:chartPeriod==='dia'?0:4,tension:0.4,fill:chartPeriod!=='dia'},
+      {label:'Ausentes',data:ausData,backgroundColor:chartPeriod==='dia'?'rgba(248,113,113,0.7)':'rgba(248,113,113,0.1)',borderColor:'#f87171',borderWidth:chartPeriod==='dia'?0:2.5,borderRadius:chartPeriod==='dia'?6:0,pointBackgroundColor:'#f87171',pointRadius:chartPeriod==='dia'?0:4,tension:0.4,fill:chartPeriod!=='dia'}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.y} alunos`}}},scales:{x:{grid:{display:false},ticks:{font:{size:9},color:'#94a3b8',maxRotation:45}},y:{grid:{color:'rgba(0,0,0,.04)'},ticks:{font:{size:9},color:'#94a3b8'},beginAtZero:true}}}
+  });
+}
+
+function confirmResetChart(){openModal('delChartModal');}
+function doDeleteChart(){
+  if(freqChart){freqChart.destroy();freqChart=null;}
+  renderChart(['—'],[0],[0]);
+  closeModal('delChartModal');
+}
+
+// ===================== PWA - SERVICE WORKER =====================
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg=>console.log('SW registrado:',reg.scope))
+      .catch(err=>console.log('SW erro:',err));
+  });
+}
+</script>
+</body>
+</html>
