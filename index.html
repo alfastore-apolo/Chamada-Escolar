@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="Chamada">
 <link rel="apple-touch-icon" href="/icone-192.png">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -410,6 +410,7 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
 const firebaseConfig = {
   apiKey: "AIzaSyA7UyPUc0MkrT5eTrNtnXr9mex8QPcEj_Y",
   authDomain: "chamada--escolar.firebaseapp.com",
+  databaseURL: "https://chamada--escolar-default-rtdb.firebaseio.com",
   projectId: "chamada--escolar",
   storageBucket: "chamada--escolar.firebasestorage.app",
   messagingSenderId: "678870294819",
@@ -417,7 +418,7 @@ const firebaseConfig = {
   measurementId: "G-KQDV8RRKZB"
 };
 firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+const db = firebase.database();
 const SCHOOL_ID = "ceti-dariana";
 
 // ===================== ESTADO ADMIN =====================
@@ -573,14 +574,18 @@ function updateTotals(){
 }
 
 // ===================== SAVE/REALTIME =====================
+let realtimeRef = null;
 async function save(){
   const date=document.getElementById("dateInput").value;
-  await db.collection("escolas").doc(SCHOOL_ID).collection("dias").doc(date).set({value:dados});
+  await db.ref(`escolas/${SCHOOL_ID}/dias/${date}`).set({value:dados});
 }
 function realtime(){
   const date=document.getElementById("dateInput").value;
-  db.collection("escolas").doc(SCHOOL_ID).collection("dias").doc(date).onSnapshot(doc=>{
-    if(doc.exists){dados=doc.data().value||buildData();}else{dados=buildData();}
+  if(realtimeRef) realtimeRef.off();
+  realtimeRef = db.ref(`escolas/${SCHOOL_ID}/dias/${date}`);
+  realtimeRef.on("value", snapshot=>{
+    const data = snapshot.val();
+    if(data && data.value){dados=data.value;}else{dados=buildData();}
     render();
   });
 }
@@ -599,8 +604,7 @@ function scheduleNextMidnightReset(){
   setTimeout(async()=>{
     // Salva o snapshot do dia anterior antes de zerar
     const prevDate = document.getElementById("dateInput").value;
-    await db.collection("escolas").doc(SCHOOL_ID)
-      .collection("historico").doc(prevDate)
+    await db.ref(`escolas/${SCHOOL_ID}/historico/${prevDate}`)
       .set({value: dados, encerradoEm: new Date().toISOString()});
 
     // Zera os dados locais
@@ -935,9 +939,9 @@ async function loadChartData(){
       const key = dt.toISOString().slice(0,10);
       labels.push(days[dt.getDay()]);
       try{
-        const doc = await db.collection('escolas').doc(SCHOOL_ID).collection('dias').doc(key).get();
-        if(doc.exists){
-          const val = doc.data().value || {};
+        const snap = await db.ref(`escolas/${SCHOOL_ID}/dias/${key}`).get();
+        if(snap.exists()){
+          const val = snap.val().value || {};
           let p=0,f=0;
           Object.values(val).forEach(v=>{p+=v.p||0;f+=v.f||0;});
           presData.push(p); ausData.push(f);
@@ -956,10 +960,10 @@ async function loadChartData(){
       const key = `${y}-${String(m).padStart(2,'0')}-${String(dd).padStart(2,'0')}`;
       const wk = Math.floor((dd-1)/7);
       promises.push(
-        db.collection('escolas').doc(SCHOOL_ID).collection('dias').doc(key).get()
-          .then(doc=>{
-            if(doc.exists){
-              const val=doc.data().value||{};
+        db.ref(`escolas/${SCHOOL_ID}/dias/${key}`).get()
+          .then(snap=>{
+            if(snap.exists()){
+              const val=snap.val().value||{};
               let p=0,f=0;
               Object.values(val).forEach(v=>{p+=v.p||0;f+=v.f||0;});
               weeksPres[wk]+=p; weeksAus[wk]+=f;
