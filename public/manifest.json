@@ -14,25 +14,25 @@
   "related_applications": [],
   "icons": [
     {
-      "src": "https://chamada--escolar.web.app/icone-192.png",
+      "src": "icone-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://chamada--escolar.web.app/icone-192.png",
+      "src": "icone-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "https://chamada--escolar.web.app/icone-512.png",
+      "src": "icone-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://chamada--escolar.web.app/icone-512.png",
+      "src": "icone-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -40,14 +40,14 @@
   ],
   "screenshots": [
     {
-      "src": "https://chamada--escolar.web.app/screenshot-wide.png",
+      "src": "screenshot-wide.png",
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
       "label": "Contagem Escolar - Visão geral"
     },
     {
-      "src": "https://chamada--escolar.web.app/screenshot-mobile.png",
+      "src": "screenshot-mobile.png",
       "sizes": "390x844",
       "type": "image/png",
       "form_factor": "narrow",
