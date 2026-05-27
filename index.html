@@ -579,6 +579,10 @@ async function save(){
   const date=document.getElementById("dateInput").value;
   await db.ref(`escolas/${SCHOOL_ID}/dias/${date}`).set({value:dados});
 }
+async function saveGrupos(){
+  await db.ref(`escolas/${SCHOOL_ID}/config/grupos`).set(grupos);
+  await db.ref(`escolas/${SCHOOL_ID}/config/schoolName`).set(schoolName);
+}
 function realtime(){
   const date=document.getElementById("dateInput").value;
   if(realtimeRef) realtimeRef.off();
@@ -589,9 +593,22 @@ function realtime(){
     render();
   });
 }
-document.getElementById("dateInput").addEventListener("change",function(){updateDateDisplay(this.value);rendered=false;realtime();});
-render();
-realtime();
+// Carrega grupos e configurações do Firebase antes de iniciar
+db.ref(`escolas/${SCHOOL_ID}/config`).get().then(snap=>{
+  if(snap.exists()){
+    const config = snap.val();
+    if(config.grupos) grupos = config.grupos;
+    if(config.schoolName){
+      schoolName = config.schoolName;
+      document.getElementById("schoolNameLabel").innerText = schoolName;
+      document.getElementById("apSchoolName").innerText = schoolName;
+    }
+  }
+  dados = buildData();
+  document.getElementById("dateInput").addEventListener("change",function(){updateDateDisplay(this.value);rendered=false;realtime();});
+  render();
+  realtime();
+});
 
 // ===================== RESET AUTOMÁTICO À MEIA-NOITE =====================
 function pad2(n){return String(n).padStart(2,'0');}
@@ -796,6 +813,7 @@ function saveSchoolName(){
   document.getElementById("schoolNameLabel").innerText=schoolName;
   document.getElementById("apSchoolName").innerText=schoolName;
   closeModal("editSchoolModal");
+  saveGrupos();
 }
 
 // --- GRUPO ---
@@ -834,6 +852,7 @@ function saveGroup(){
   rendered=false;
   render();
   renderAdminPanel();
+  saveGrupos();
 }
 function openDeleteGroup(gi){
   deletingGroupIndex=gi;
@@ -849,6 +868,7 @@ function confirmDeleteGroup(){
   rendered=false;
   render();
   renderAdminPanel();
+  saveGrupos();
 }
 
 // --- TURMA ---
@@ -883,6 +903,7 @@ function saveTurma(){
   renderAdminPanel();
   renderTurmasList(gi);
   document.getElementById("apTurmasSection").style.display="block";
+  saveGrupos();
 }
 function openDeleteTurma(gi,ti){
   activeGroupIndexForTurma=gi;
@@ -899,6 +920,7 @@ function confirmDeleteTurma(){
   render();
   renderAdminPanel();
   renderTurmasList(gi);
+  saveGrupos();
 }
 
 // fechar modal clicando fora
