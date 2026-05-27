@@ -1,7 +1,7 @@
 {
   "name": "Contagem Escolar - CETI Dariana",
   "short_name": "Contagem",
-  "description": "Sistema de chamada escolar em tempo real - CETI Dariana",
+  "description": "Sistema de contagem escolar em tempo real - CETI Dariana",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",
@@ -9,30 +9,45 @@
   "orientation": "portrait-primary",
   "id": "contagem-escolar-ceti-dariana",
   "prefer_related_applications": false,
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "iarc_rating_id": "",
+  "related_applications": [],
   "icons": [
     {
-      "src": "/icone-192.png",
+      "src": "https://chamada--escolar.web.app/icone-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "/icone-512.png",
+      "src": "https://chamada--escolar.web.app/icone-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "https://chamada--escolar.web.app/icone-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "https://chamada--escolar.web.app/icone-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "screenshots": [
     {
-      "src": "/screenshot-wide.png",
+      "src": "https://chamada--escolar.web.app/screenshot-wide.png",
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
       "label": "Contagem Escolar - Visão geral"
     },
     {
-      "src": "/screenshot-mobile.png",
+      "src": "https://chamada--escolar.web.app/screenshot-mobile.png",
       "sizes": "390x844",
       "type": "image/png",
       "form_factor": "narrow",
