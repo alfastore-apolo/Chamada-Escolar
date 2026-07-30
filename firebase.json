@@ -4,24 +4,26 @@
     "ignore": [
       "firebase.json",
       "**/.*",
-      "README.md",
-      ".firebaserc"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
+      "**/node_modules/**"
     ],
     "headers": [
       {
-        "source": "**",
+        "source": "/sw.js",
         "headers": [
-          { "key": "X-Content-Type-Options", "value": "nosniff" },
-          { "key": "X-Frame-Options", "value": "DENY" },
-          { "key": "X-XSS-Protection", "value": "1; mode=block" },
-          { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+          { "key": "Cache-Control", "value": "no-cache" }
         ]
+      },
+      {
+        "source": "/manifest.json",
+        "headers": [
+          { "key": "Content-Type", "value": "application/manifest+json" }
+        ]
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "!(*.@(js|css|json|png|jpg|jpeg|gif|svg|ico|webp|webmanifest|woff|woff2|ttf|map))",
+        "destination": "/index.html"
       }
     ]
   }
