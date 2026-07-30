@@ -10,32 +10,43 @@
   "id": "contagem-escolar-ceti-dariana",
   "prefer_related_applications": false,
   "display_override": ["standalone", "minimal-ui", "browser"],
-  "iarc_rating_id": "",
   "related_applications": [],
   "icons": [
     {
-      "src": "icone-192.png",
+      "src": "/icone-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "icone-512.png",
+      "src": "/icone-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icone-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icone-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "screenshots": [
     {
-      "src": "screenshot-wide.png",
+      "src": "/screenshot-wide.png",
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
       "label": "Contagem Escolar - Visão geral"
     },
     {
-      "src": "screenshot-mobile.png",
+      "src": "/screenshot-mobile.png",
       "sizes": "390x844",
       "type": "image/png",
       "form_factor": "narrow",
