@@ -10,6 +10,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Contagem">
 <link rel="apple-touch-icon" href="/icone-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -128,6 +131,49 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
 /* Toast notification */
 .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#0f172a;color:white;padding:10px 20px;border-radius:12px;font-size:13px;font-weight:800;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;}
 .toast.show{opacity:1;}
+
+/* ===================== TELA DE BLOQUEIO DE ASSINATURA ===================== */
+#subscriptionLockScreen{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:500;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  overflow-y:auto;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  background:radial-gradient(circle at 50% 0%, #141926 0%, #0B0E14 65%);
+}
+#subscriptionLockScreen.show{display:flex;}
+.sls-noise{position:fixed;inset:0;pointer-events:none;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+.sls-card{position:relative;width:100%;max-width:440px;background:#1A2033;border:1px solid #2A3145;border-radius:20px;padding:44px 36px 36px;text-align:center;box-shadow:0 30px 70px -20px rgba(0,0,0,.6);}
+.sls-lock-wrap{position:relative;width:108px;height:108px;margin:0 auto 28px;}
+.sls-lock-ring{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle, rgba(232,162,61,.16) 0%, rgba(232,162,61,0) 70%);animation:sls-pulse-ring 2.6s ease-in-out infinite;}
+@keyframes sls-pulse-ring{0%,100%{transform:scale(.9);opacity:.6;}50%{transform:scale(1.15);opacity:1;}}
+.sls-lock{position:relative;width:108px;height:108px;overflow:visible;}
+.sls-lock-shackle{fill:none;stroke:#E8A23D;stroke-width:5;stroke-linecap:round;stroke-dasharray:96;stroke-dashoffset:96;animation:sls-draw-shackle 1s cubic-bezier(.65,0,.35,1) .2s forwards;transform-origin:54px 44px;}
+@keyframes sls-draw-shackle{to{stroke-dashoffset:0;}}
+.sls-lock-body{fill:#E8A23D;opacity:0;transform:translateY(4px);animation:sls-rise-body .5s ease-out .9s forwards;}
+@keyframes sls-rise-body{to{opacity:1;transform:translateY(0);}}
+.sls-lock-keyhole{fill:#0B0E14;opacity:0;animation:sls-rise-body .5s ease-out 1.15s forwards;}
+.sls-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#E8A23D;background:rgba(232,162,61,.1);border:1px solid rgba(232,162,61,.28);padding:6px 14px;border-radius:100px;margin-bottom:20px;}
+.sls-eyebrow .sls-dot{width:6px;height:6px;border-radius:50%;background:#E8A23D;animation:sls-blink 1.6s ease-in-out infinite;}
+@keyframes sls-blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.sls-card h1{font-family:'Sora',sans-serif;font-weight:700;font-size:26px;line-height:1.25;letter-spacing:-.01em;color:#F3F1EA;margin-bottom:14px;}
+.sls-card p.sls-desc{font-size:15px;line-height:1.6;color:#A9B0C2;margin-bottom:28px;}
+.sls-card p.sls-desc strong{color:#F3F1EA;font-weight:600;}
+.sls-divider{height:1px;background:#2A3145;margin:0 0 26px;}
+.sls-cta{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#25D366;color:#06210F;font-family:'Sora',sans-serif;font-weight:700;font-size:15.5px;padding:15px 20px;border-radius:12px;text-decoration:none;border:none;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease,background .15s ease;box-shadow:0 10px 24px -8px rgba(37,211,102,.45);}
+.sls-cta:hover{transform:translateY(-2px);box-shadow:0 14px 30px -8px rgba(37,211,102,.6);background:#2ee374;}
+.sls-cta:active{transform:translateY(0);}
+.sls-cta svg{width:20px;height:20px;flex-shrink:0;}
+.sls-contact-number{margin-top:14px;font-size:13px;color:#6A7488;letter-spacing:.02em;}
+.sls-contact-number span{color:#A9B0C2;font-weight:500;}
+.sls-footnote{margin-top:24px;font-size:12px;color:#6A7488;line-height:1.5;}
+.sls-admin-link{margin-top:18px;background:none;border:none;color:#3a4258;font-size:11px;letter-spacing:.03em;cursor:pointer;padding:6px;text-decoration:underline;}
+.sls-admin-link:hover{color:#6A7488;}
+@media (prefers-reduced-motion: reduce){#subscriptionLockScreen *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
 </head>
 <body>
@@ -198,6 +244,34 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
 </div>
 </div>
 
+<!-- TELA DE BLOQUEIO DE ASSINATURA -->
+<div id="subscriptionLockScreen">
+  <div class="sls-noise"></div>
+  <main class="sls-card">
+    <div class="sls-lock-wrap">
+      <div class="sls-lock-ring"></div>
+      <svg class="sls-lock" viewBox="0 0 108 108" fill="none">
+        <path class="sls-lock-shackle" d="M38 48 V36 C38 24 47 16 54 16 C61 16 70 24 70 36 V48" />
+        <rect class="sls-lock-body" x="28" y="46" width="52" height="42" rx="10" />
+        <path class="sls-lock-keyhole" d="M54 60 a6 6 0 1 1 -3.2 11.1 L48 82 h12 l-2.8 -10.9 A6 6 0 0 1 54 60 Z" />
+      </svg>
+    </div>
+    <div class="sls-eyebrow"><span class="sls-dot"></span>Acesso temporariamente bloqueado</div>
+    <h1>Sua assinatura mensal venceu</h1>
+    <p class="sls-desc">
+      Para continuar usando o aplicativo sem interrupções, é necessário <strong>renovar sua assinatura</strong>. Fale com o suporte agora mesmo pelo WhatsApp e liberamos seu acesso rapidamente.
+    </p>
+    <div class="sls-divider"></div>
+    <a class="sls-cta" href="https://wa.me/5592994810508?text=Ol%C3%A1%2C%20minha%20assinatura%20venceu%20e%20preciso%20renov%C3%A1-la%20para%20voltar%20a%20usar%20o%20aplicativo." target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.29-1.39a9.9 9.9 0 0 0 4.7 1.2h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m0 1.8a8.1 8.1 0 0 1 5.76 2.39 8.08 8.08 0 0 1 2.38 5.73c0 4.48-3.65 8.12-8.15 8.12a8.1 8.1 0 0 1-4.13-1.13l-.3-.17-3.14.82.84-3.06-.19-.32a8.06 8.06 0 0 1-1.24-4.31c0-4.48 3.65-8.12 8.13-8.12M8.5 6.85c-.17 0-.44.06-.67.31s-.88.86-.88 2.09.9 2.42 1.03 2.59c.13.17 1.76 2.83 4.38 3.85 2.17.85 2.61.68 3.08.64.47-.04 1.53-.62 1.75-1.22.22-.6.22-1.11.15-1.22-.06-.11-.24-.17-.5-.3-.26-.13-1.53-.75-1.77-.84-.24-.09-.41-.13-.59.13-.17.26-.68.84-.83 1.01-.15.17-.31.19-.57.06-.26-.13-1.1-.4-2.09-1.28-.77-.68-1.29-1.53-1.44-1.79-.15-.26-.02-.4.11-.53.12-.12.26-.31.39-.47.13-.15.17-.26.26-.43.09-.17.04-.32-.02-.45-.06-.13-.59-1.44-.82-1.96-.21-.51-.43-.44-.59-.45z"/></svg>
+      Falar com o suporte no WhatsApp
+    </a>
+    <p class="sls-contact-number">Ou chame diretamente: <span>(92) 99481-0508</span></p>
+    <p class="sls-footnote">O acesso será liberado automaticamente assim que a renovação for confirmada.</p>
+    <button class="sls-admin-link" onclick="openModal('pwModal');setTimeout(()=>document.getElementById('pwInput').focus(),100);">Área administrativa</button>
+  </main>
+</div>
+
 <!-- ADMIN PANEL -->
 <div id="adminPanel">
   <div class="ap-header">
@@ -248,6 +322,18 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
       </div>
       <div class="ap-row-icons">
         <button class="ap-icon-btn" style="background:#fff7ed;color:#ea580c;width:auto;padding:0 12px;font-size:12px;font-weight:900;" onclick="confirmResetChart()">↺ Resetar</button>
+      </div>
+    </div>
+  </div>
+  <div class="ap-section">
+    <div class="ap-section-title">🔒 Bloqueio de Assinatura</div>
+    <div class="ap-row">
+      <div>
+        <div class="ap-row-label" id="lockStatusLabel">Desativado</div>
+        <div class="ap-row-sub">Bloqueia o acesso dos usuários com aviso para renovar a assinatura via WhatsApp</div>
+      </div>
+      <div class="ap-row-icons">
+        <button class="ap-icon-btn" id="lockToggleBtn" style="background:#f0fdf4;color:#16a34a;width:auto;padding:0 14px;font-size:12px;font-weight:900;" onclick="toggleSubscriptionLock()">Ativar</button>
       </div>
     </div>
   </div>
@@ -386,6 +472,7 @@ let activeGroupIndexForTurma = null;
 let editingTurmaIndex = null;
 let deletingTurmaIndex = null;
 let schoolName = "CETI Dariana";
+let subscriptionLocked = false;
 let rendered = false;
 let realtimeRef = null;
 let freqChart = null;
@@ -642,7 +729,16 @@ db.ref(`escolas/${SCHOOL_ID}/config`).get().then(snap=>{
       document.getElementById("schoolNameLabel").innerText=schoolName;
       document.getElementById("apSchoolName").innerText=schoolName;
     }
+    if(config.subscriptionLocked){
+      subscriptionLocked=true;
+    }
   }
+  applyLockScreen();
+  db.ref(`escolas/${SCHOOL_ID}/config/subscriptionLocked`).on("value",snap=>{
+    subscriptionLocked=snap.val()===true;
+    applyLockScreen();
+    renderLockToggleUI();
+  });
   dados=buildData();
 
   document.getElementById("dateInput").addEventListener("change",function(){
@@ -722,6 +818,37 @@ function applyAdminUI(){
   document.querySelectorAll(".admin-only").forEach(el=>el.style.display=isAdmin?"flex":"none");
   document.getElementById("adminBadge").style.display=isAdmin?"flex":"none";
   document.getElementById("editSchoolNameBtn").style.display=isAdmin?"inline-flex":"none";
+  applyLockScreen();
+}
+
+// ===================== BLOQUEIO DE ASSINATURA =====================
+function applyLockScreen(){
+  const el=document.getElementById("subscriptionLockScreen");
+  if(subscriptionLocked && !isAdmin){
+    el.classList.add("show");
+    document.body.style.overflow="hidden";
+  } else {
+    el.classList.remove("show");
+    document.body.style.overflow="";
+  }
+}
+
+function renderLockToggleUI(){
+  const label=document.getElementById("lockStatusLabel");
+  const btn=document.getElementById("lockToggleBtn");
+  if(!label||!btn)return;
+  label.innerText=subscriptionLocked?"Ativado":"Desativado";
+  btn.innerText=subscriptionLocked?"Desativar":"Ativar";
+  btn.style.background=subscriptionLocked?"#fef2f2":"#f0fdf4";
+  btn.style.color=subscriptionLocked?"#dc2626":"#16a34a";
+}
+
+async function toggleSubscriptionLock(){
+  subscriptionLocked=!subscriptionLocked;
+  await db.ref(`escolas/${SCHOOL_ID}/config/subscriptionLocked`).set(subscriptionLocked);
+  renderLockToggleUI();
+  applyLockScreen();
+  showToast(subscriptionLocked?"🔒 Tela de bloqueio ativada":"🔓 Tela de bloqueio desativada");
 }
 
 // ===================== ADMIN PANEL =====================
@@ -730,6 +857,7 @@ function closeAdmin(){document.getElementById("adminPanel").classList.remove("sh
 
 function renderAdminPanel(){
   document.getElementById("apSchoolName").innerText=schoolName;
+  renderLockToggleUI();
   const list=document.getElementById("apGroupList");
   list.innerHTML="";
   grupos.forEach((g,gi)=>{
