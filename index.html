@@ -30,6 +30,8 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
 .school-name-wrap small{font-size:14px;font-weight:900;color:#93c5fd;letter-spacing:0.2px;}
 .school-name-wrap .admin-icon-btn{background:none;border:none;cursor:pointer;padding:2px 4px;border-radius:6px;opacity:0.6;transition:opacity .2s,background .2s;font-size:12px;}
 .school-name-wrap .admin-icon-btn:hover{opacity:1;background:rgba(255,255,255,.15);}
+.admin-lock-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.3;padding:2px 5px;border-radius:6px;color:#cbd5e1;transition:opacity .2s,background .2s;line-height:1;}
+.admin-lock-btn:hover{opacity:0.85;background:rgba(255,255,255,.15);}
 .top-right{display:flex;flex-direction:column;align-items:flex-end;gap:7px;}
 .badge-row{display:flex;align-items:center;gap:6px;}
 .date-input{position:absolute;opacity:0;width:0;height:0;}
@@ -195,6 +197,7 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
       <div class="badge-row">
         <div class="badge online">🟢 Tempo Real</div>
         <div class="badge admin-badge" id="adminBadge" style="display:none">🔐 Admin</div>
+        <button class="admin-lock-btn" id="adminAccessBtn" title="Área administrativa" onclick="openAdminAccess()">🔒</button>
       </div>
       <input type="date" id="dateInput" style="position:absolute;opacity:0;width:0;height:0;pointer-events:none;">
       <span class="date-display" id="dateDisplay" title="Clique para alterar a data"></span>
@@ -268,7 +271,7 @@ button,input{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF P
     </a>
     <p class="sls-contact-number">Ou chame diretamente: <span>(92) 99481-0508</span></p>
     <p class="sls-footnote">O acesso será liberado automaticamente assim que a renovação for confirmada.</p>
-    <button class="sls-admin-link" onclick="openModal('pwModal');setTimeout(()=>document.getElementById('pwInput').focus(),100);">Área administrativa</button>
+    <button class="sls-admin-link" onclick="openAdminAccess()">Área administrativa</button>
   </main>
 </div>
 
@@ -755,21 +758,20 @@ db.ref(`escolas/${SCHOOL_ID}/config`).get().then(snap=>{
   });
 });
 
-// ===================== DOUBLE TAP FOOTER =====================
-const footerTapZone=document.getElementById("footerTapZone");
-footerTapZone.addEventListener("dblclick",()=>{
+// ===================== ACESSO ADMIN (botão discreto + double-tap) =====================
+function openAdminAccess(){
   if(isAdmin){openAdmin();return;}
   openModal("pwModal");
   setTimeout(()=>document.getElementById("pwInput").focus(),100);
-});
+}
+const footerTapZone=document.getElementById("footerTapZone");
+footerTapZone.addEventListener("dblclick",openAdminAccess);
 let lastTap=0;
 footerTapZone.addEventListener("touchend",e=>{
   const now=Date.now();
   if(now-lastTap<350){
     e.preventDefault();
-    if(isAdmin){openAdmin();return;}
-    openModal("pwModal");
-    setTimeout(()=>document.getElementById("pwInput").focus(),100);
+    openAdminAccess();
   }
   lastTap=now;
 });
@@ -818,6 +820,7 @@ function applyAdminUI(){
   document.querySelectorAll(".admin-only").forEach(el=>el.style.display=isAdmin?"flex":"none");
   document.getElementById("adminBadge").style.display=isAdmin?"flex":"none";
   document.getElementById("editSchoolNameBtn").style.display=isAdmin?"inline-flex":"none";
+  document.getElementById("adminAccessBtn").style.display=isAdmin?"none":"inline-flex";
   applyLockScreen();
 }
 
