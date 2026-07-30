@@ -22,7 +22,7 @@
     ],
     "rewrites": [
       {
-        "source": "!(*.@(js|css|json|png|jpg|jpeg|gif|svg|ico|webp|webmanifest|woff|woff2|ttf|map))",
+        "source": "**",
         "destination": "/index.html"
       }
     ]
